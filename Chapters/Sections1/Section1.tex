@@ -1,0 +1,189 @@
+\section{Espacios de Hilbert y espacios de funciones}
+\label{Spaces}
+
+En esta sección se fija el marco funcional en el que se formularán los problemas inversos asociados a la tomografía computarizada. En particular, se introducen los espacios de Hilbert, los espacios $L^{p}$ y los espacios de Sobolev que se utilizarán en los capítulos posteriores. Las referencias generales son \cite{rynne_youngson2000,kirsch2011,natterer2001,kuchment2014}.
+
+
+\subsection{Espacios de Hilbert}
+
+A lo largo de este trabajo se consideran espacios vectoriales sobre $\mathbb{R}$, a menos que se indique lo contrario.
+
+\begin{definition}
+Sea $H$ un espacio vectorial real. Un \emph{producto interno} en $H$ es una aplicación
+\[
+\langle \cdot,\cdot \rangle : H \times H \to \mathbb{R}
+\]
+tal que, para todo $x,y,z \in H$ y todo $\alpha \in \mathbb{R}$, se verifican:
+\begin{enumerate}
+  \item $\langle \alpha x + y, z \rangle = \alpha \langle x,z \rangle + \langle y,z \rangle$;
+  \item $\langle x,y \rangle = \langle y,x \rangle$ ;
+  \item $\langle x,x \rangle \ge 0$;
+  \item $\langle x,x \rangle = 0$ implica $x=0$ .
+\end{enumerate}
+En este caso se dice que $(H,\langle \cdot,\cdot \rangle)$ es un \emph{espacio con producto interno}.
+\end{definition}
+
+
+\begin{proposition}
+
+    Sea $H$ un espacio con producto interno, y sean $x, y \in X$, entonces
+    \begin{itemize}
+        \item $|\langle x,y \rangle|^2 \leq \langle x, y \rangle \langle y, y \rangle $
+        \item La función $|| \cdot || : X \to \mathbb{R}$ definida por $|| x || = \langle x, x \rangle ^{1/2}$ es una norma en $X$.
+    \end{itemize}
+\end{proposition}
+
+\begin{proof}
+    Pendiente
+\end{proof}
+
+\begin{definition}
+Un espacio con producto interno $(H,\langle \cdot,\cdot \rangle)$ se denomina \emph{espacio de Hilbert} si es completo con respecto a la norma inducida $\|\cdot\|$, es decir, si toda sucesión de Cauchy en $(H,\|\cdot\|)$ converge en $H$.
+\end{definition}
+
+\begin{example}
+Entre los ejemplos básicos de espacios de Hilbert se encuentran:
+\begin{enumerate}
+  \item El espacio euclídeo $\mathbb{R}^{n}$ con el producto interno
+  \[
+  \langle x,y \rangle = \sum_{j=1}^{n} x_{j} y_{j}.
+  \]
+  \item El espacio
+  \[
+  \ell^{2} = \Bigl\{ (x_{j})_{j \in \mathbb{N}} : \sum_{j=1}^{\infty} |x_{j}|^{2} < \infty \Bigr\},
+  \]
+  con producto interno
+  \[
+  \langle x,y \rangle = \sum_{j=1}^{\infty} x_{j} y_{j}.
+  \]
+  \item El espacio $L^{2}(\Omega)$, donde $\Omega \subset \mathbb{R}^{n}$ es un conjunto medible, con
+  \[
+  \langle f,g \rangle = \int_{\Omega} f(x)\,g(x)\,dx.
+  \]
+\end{enumerate}
+\end{example}
+
+En el contexto de la tomografía computarizada, los espacios de Hilbert de funciones, en particular los espacios $L^{2}(\Omega)$ y ciertos espacios de Sobolev, proporcionan un marco natural para la formulación de los problemas directo e inverso asociados a la transformada de Radon \cite{natterer2001,kuchment2014}.
+
+
+\subsection{Espacios \texorpdfstring{$L^{p}$}{Lp}}
+
+Sea $(X,\mathcal{A},\mu)$ un espacio de medida. Para $1 \le p < \infty$, se define
+\[
+L^{p}(X) = \left\{ f: f \text{ es medible y }  \int_{X} |f(x)|^{p}\, d\mu(x) < \infty \right\},
+\]
+La aplicación
+\[
+\|f\|_{L^{p}} := \left( \int_{X} |f(x)|^{p}\, d\mu(x) \right)^{1/p}
+\]
+define una norma en $L^{p}(X)$, y con esta norma $L^{p}(X)$ es un espacio de Banach \cite{rynne_youngson2000}.
+
+Para $p = \infty$, primero definimos el supremo esencial.
+
+\begin{definition}[Supremo esencial]
+Sea $f : X \to \mathbb{R}$ una función medible. Se define el \emph{supremo esencial}
+de $|f|$ como
+\[
+\operatorname*{ess\,sup}_{x\in X} |f(x)|
+:= \inf\Bigl\{ M \ge 0 : \mu\bigl(\{x \in X : |f(x)| > M\}\bigr) = 0 \Bigr\}.
+\]
+\end{definition}
+
+\begin{definition}[Espacio $L^{\infty}$]
+Se define
+\[
+L^{\infty}(X) 
+= \Bigl\{ f \text{ medible} : \operatorname*{ess\,sup}_{x\in X} |f(x)| < \infty \Bigr\},
+\]
+identificando funciones que coinciden casi en todas partes. La aplicación
+\[
+\|f\|_{L^{\infty}} := \operatorname*{ess\,sup}_{x\in X} |f(x)|
+\]
+define una norma en $L^{\infty}(X)$, con la cual $L^{\infty}(X)$ es un espacio de Banach.
+\end{definition}
+
+El caso $p=2$ será especialmente relevante en lo que sigue. En este caso, $L^{2}(X)$ es un espacio de Hilbert con el producto interno
+\[
+\langle f,g \rangle_{L^{2}} = \int_{X} f(x)\,g(x)\, d\mu(x).
+\]
+En particular, espacios del tipo $L^{2}(\mathbb{R}^{2})$ y $L^{2}(\Omega)$, con $\Omega \subset \mathbb{R}^{2}$, se utilizarán para modelar las imágenes y los datos de proyección en los problemas tomográficos \cite{natterer2001,kuchment2014}.
+
+
+\subsection{Espacios de Sobolev}
+
+Los espacios de Sobolev permiten cuantificar la regularidad de funciones en términos de derivadas (en sentido débil) controladas en norma $L^{2}$. Esta estructura es adecuada para formular hipótesis de suavidad sobre la solución de un problema inverso y para introducir términos de regularización.
+
+Sea $\Omega \subset \mathbb{R}^{n}$ un abierto. Se denota por $C_{c}^{\infty}(\Omega)$ el conjunto de funciones suaves con soporte compacto contenido en $\Omega$.
+
+\begin{definition}[Espacio $L^{1}_{\mathrm{loc}}(\Omega)$]
+Se define el espacio de funciones localmente integrables como
+\[
+L^{1}_{\mathrm{loc}}(\Omega)
+= \left\{ f : \Omega \to \mathbb{R} \text{ medible} \;\middle|\;
+f \in L^{1}(K) \text{ para todo compacto } K \subset \Omega \right\}.
+\]
+\end{definition}
+
+
+\begin{definition}[Derivada débil de primer orden]
+Sea $f \in L^{1}_{\mathrm{loc}}(\Omega)$ y $1 \le j \le n$. Se dice que una función $g \in L^{1}_{\mathrm{loc}}(\Omega)$ es la \emph{derivada débil} de $f$ respecto a $x_{j}$ si
+\[
+\int_{\Omega} f(x)\, \frac{\partial \varphi}{\partial x_{j}}(x)\, dx
+= - \int_{\Omega} g(x)\, \varphi(x)\, dx
+\quad \text{para toda } \varphi \in C_{c}^{\infty}(\Omega).
+\]
+En este caso se escribe $g = \partial_{x_{j}} f$.
+\end{definition}
+
+\begin{definition}[Espacio de Sobolev $H^{1}(\Omega)$]
+Se define
+\[
+H^{1}(\Omega) = \left\{ f \in L^{2}(\Omega) : \partial_{x_{j}} f \in L^{2}(\Omega) \text{ para todo } j=1,\dots,n \right\},
+\]
+donde las derivadas se entienden en el sentido débil. La norma en $H^{1}(\Omega)$ viene dada por
+\[
+\|f\|_{H^{1}(\Omega)}^{2} 
+= \int_{\Omega} |f(x)|^{2}\,dx 
++ \sum_{j=1}^{n} \int_{\Omega} \left|\partial_{x_{j}} f(x)\right|^{2}\,dx.
+\]
+\end{definition}
+
+\begin{proposition}
+El espacio $H^{1}(\Omega)$, provisto del producto interno
+\[
+\langle f,g \rangle_{H^{1}(\Omega)}
+= \int_{\Omega} f(x)\,g(x)\,dx
++ \sum_{j=1}^{n} \int_{\Omega} \partial_{x_{j}} f(x)\,\partial_{x_{j}} g(x)\,dx,
+\]
+es un espacio de Hilbert.
+\end{proposition}
+
+\begin{proof}
+Pendiente
+\end{proof}
+
+Para órdenes superiores resulta conveniente utilizar la notación de multiíndices. Si $\alpha = (\alpha_{1},\dots,\alpha_{n}) \in \mathbb{N}_{0}^{n}$ y $|\alpha| = \alpha_{1} + \cdots + \alpha_{n}$, se escribe
+\[
+D^{\alpha} f = \partial_{x_{1}}^{\alpha_{1}} \cdots \partial_{x_{n}}^{\alpha_{n}} f,
+\]
+entendiendo las derivadas en sentido débil.
+
+\begin{definition}[Espacios de Sobolev $H^{k}(\Omega)$]
+Sea $k \in \mathbb{N}$. Se define
+\[
+H^{k}(\Omega) = \left\{ f \in L^{2}(\Omega) : D^{\alpha} f \in L^{2}(\Omega) \text{ para todo multiíndice } \alpha \text{ con } |\alpha|\le k \right\},
+\]
+con norma
+\[
+\|f\|_{H^{k}(\Omega)}^{2}
+= \sum_{|\alpha|\le k} \int_{\Omega} |D^{\alpha} f(x)|^{2}\,dx.
+\]
+\end{definition}
+
+Con esta norma, $H^{k}(\Omega)$ es también un espacio de Hilbert \cite{kirsch2011}. En aplicaciones a tomografía, estos espacios permiten formular términos de regularización que penalizan la falta de suavidad de la imagen a reconstruir, típicamente mediante funcionales de la forma
+\[
+\|Rf - g\|_{Y}^{2} + \alpha \|f\|_{H^{1}(\Omega)}^{2},
+\]
+donde $R$ denota la transformada de Radon, $g$ representa los datos medidos, $Y$ es un espacio de Hilbert adecuado para el sinograma y $\alpha>0$ es un parámetro de regularización. Estos aspectos se retomarán en capítulos posteriores.
+
+

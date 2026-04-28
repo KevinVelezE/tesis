@@ -1,0 +1,46 @@
+\section{La transformada de Radon}
+
+La formulación matemática del modelo descrito en la sección anterior conduce de manera natural a la introducción de la transformada de Radon como operador que asocia a una función sus integrales a lo largo de rectas en el plano.
+
+Sea $f \in L^{2}(\mathbb{R}^{2})$ una función con soporte compacto. Para cada $\theta \in [0,\pi)$ y $t \in \mathbb{R}$, se define la \emph{transformada de Radon} de $f$ por
+\[
+\mathcal{R}f(t,\theta) = \int_{L(t,\theta)} f(x)\, ds,
+\]
+donde $L(t,\theta) = \{ x \in \mathbb{R}^{2} : x \cdot \omega(\theta) = t \}$ es la recta parametrizada en la sección anterior y $ds$ denota el elemento de longitud sobre dicha recta.
+
+De este modo, la función $\mathcal{R}f : \mathbb{R} \times [0,\pi) \to \mathbb{R}$ describe la colección de todas las integrales de línea de $f$ y coincide con las mediciones ideales del sistema tomográfico introducidas previamente, es decir,
+\[
+\mathcal{R}f(t,\theta) = p(t,\theta).
+\]
+En este sentido, la transformada de Radon proporciona un modelo matemático continuo del proceso de adquisición de datos en tomografía computarizada \cite{kak_slaney1988,natterer2001,kuchment2014}.
+
+\subsection*{Propiedades básicas}
+
+La transformada de Radon es un operador lineal, en el sentido de que para cualesquiera $f,g \in L^{2}(\mathbb{R}^{2})$ y $\alpha,\beta \in \mathbb{R}$ se cumple
+\[
+\mathcal{R}(\alpha f + \beta g) = \alpha \mathcal{R}f + \beta \mathcal{R}g.
+\]
+
+Además, bajo hipótesis adecuadas sobre $f$, la aplicación $f \mapsto \mathcal{R}f$ es continua entre espacios funcionales apropiados. En particular, si $f$ es suficientemente regular y de soporte compacto, entonces $\mathcal{R}f$ es una función continua en las variables $(t,\theta)$ \cite{helgason2011,kuchment2014}.
+
+Desde el punto de vista geométrico, la transformada de Radon puede interpretarse como un operador que proyecta la función $f$ sobre el conjunto de todas las rectas del plano, asignando a cada recta el valor de la integral de $f$ sobre dicha recta.
+
+\subsection*{Interpretación como operador integral}
+
+La transformada de Radon puede escribirse también en términos de distribuciones utilizando la función delta de Dirac. Formalmente, se tiene
+\[
+\mathcal{R}f(t,\theta) = \int_{\mathbb{R}^{2}} f(x)\,\delta(x \cdot \omega(\theta) - t)\, dx,
+\]
+lo que pone de manifiesto que $\mathcal{R}$ es un operador integral cuyo núcleo está dado por la distribución $\delta(x \cdot \omega(\theta) - t)$ \cite{natterer2001,kuchment2014}.
+
+Esta formulación resulta particularmente útil para el análisis teórico de la transformada y su relación con la transformada de Fourier.
+
+\subsection*{Observación sobre el dominio de definición}
+
+En el contexto de esta tesis, se considerará la transformada de Radon como un operador definido inicialmente sobre funciones suaves y de soporte compacto, y posteriormente extendido por densidad a espacios funcionales como $L^{2}(\mathbb{R}^{2})$. Este enfoque es estándar en la literatura y permite evitar dificultades técnicas sin perder generalidad en el análisis \cite{helgason2011}.
+
+\subsection*{Observaciones}
+
+La transformada de Radon constituye el operador fundamental del problema inverso en tomografía computarizada. El objetivo de reconstruir la función $f$ a partir de sus proyecciones $\mathcal{R}f$ se traduce en la necesidad de invertir este operador.
+
+En el modelo continuo, dicha inversión puede realizarse mediante herramientas del análisis de Fourier, lo que da lugar a fórmulas explícitas que serán estudiadas en las secciones siguientes. En particular, el teorema de corte de Fourier proporciona el vínculo esencial entre la transformada de Radon y la transformada de Fourier, y constituye la base del método de retroproyección filtrada.

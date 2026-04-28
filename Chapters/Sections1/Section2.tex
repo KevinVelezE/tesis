@@ -1,0 +1,135 @@
+\section{Operadores lineales y operadores compactos}
+\label{Operators}
+
+En esta sección se introducen las nociones de operador lineal acotado entre espacios normados y, en particular, entre espacios de Hilbert, así como el concepto de operador adjunto y de operador compacto. Estas herramientas serán fundamentales para la formulación abstracta de los problemas inversos considerados más adelante, donde la transformada de Radon y sus operadores asociados se describen como operadores lineales entre espacios de Hilbert \cite{kirsch2011,natterer2001,kuchment2014}.
+
+
+\subsection{Operadores lineales acotados}
+
+Sea $X$ un espacio normado sobre $\mathbb{R}$ con norma $\|\cdot\|_{X}$ y sea $Y$ otro espacio normado con norma $\|\cdot\|_{Y}$.
+
+\begin{definition}
+Una aplicación $T : X \to Y$ se denomina \emph{operador lineal} si satisface
+\[
+T(x + y) = T(x) + T(y), \qquad T(\alpha x) = \alpha\,T(x)
+\]
+para todo $x,y \in X$ y todo $\alpha \in \mathbb{R}$.
+\end{definition}
+
+En el contexto de espacios normados, el concepto de acotación equivale al de continuidad en sentido global.
+
+\begin{definition}
+Un operador lineal $T : X \to Y$ se dice \emph{acotado} si existe una constante $C \ge 0$ tal que
+\[
+\|T x\|_{Y} \le C\,\|x\|_{X} \quad \text{para todo } x \in X.
+\]
+El menor $C$ que verifica la desigualdad anterior se denomina \emph{norma de operador} de $T$ y se denota por
+\[
+\|T\| := \sup_{\|x\|_{X} = 1} \|T x\|_{Y}.
+\]
+\end{definition}
+
+Es bien conocido que un operador lineal $T : X \to Y$ es acotado si y solo si es continuo (en cualquier punto de $X$), y que el conjunto de todos los operadores lineales acotados de $X$ en $Y$, denotado por $\mathcal{L}(X,Y)$, es un espacio de Banach con la norma de operador cuando $Y$ es completo \cite{rynne_youngson2000}.
+
+En el caso particular de espacios de Hilbert, se utilizará de forma sistemática la notación $\mathcal{L}(H_{1},H_{2})$ para designar el espacio de todos los operadores lineales acotados de un espacio de Hilbert $H_{1}$ en otro espacio de Hilbert $H_{2}$. Cuando $H_{1} = H_{2} = H$, se escribe simplemente $\mathcal{L}(H)$.
+
+
+\subsection{Operadores acotados en espacios de Hilbert y operador adjunto}
+
+Sea en adelante $H_{1}$ y $H_{2}$ espacios de Hilbert reales, con productos internos $\langle \cdot,\cdot \rangle_{H_{1}}$ y $\langle \cdot,\cdot \rangle_{H_{2}}$, respectivamente.
+
+Dado un operador lineal acotado $T \in \mathcal{L}(H_{1},H_{2})$ y un vector fijo $y \in H_{2}$, la aplicación
+\[
+H_{1} \ni x \longmapsto \langle T x, y \rangle_{H_{2}}
+\]
+es un funcional lineal y acotado sobre $H_{1}$. El teorema de representación de Riesz garantiza que todo funcional lineal continuo sobre un espacio de Hilbert puede representarse mediante un producto interno con un elemento del propio espacio.
+
+\begin{theorem}[Representación de Riesz]
+Sea $H$ un espacio de Hilbert real y sea $F : H \to \mathbb{R}$ un funcional lineal y continuo. Entonces existe un único elemento $z \in H$ tal que
+\[
+F(x) = \langle x,z \rangle_{H} \quad \text{para todo } x \in H.
+\]
+Además, se cumple $\|F\| = \|z\|_{H}$.
+\end{theorem}
+
+\begin{proof}
+    Pendiente, tomar de \cite{rynne_youngson2000}
+\end{proof}
+
+\begin{definition}[Operador adjunto]
+Sea $T \in \mathcal{L}(H_{1},H_{2})$. El \emph{adjunto} de $T$ es el operador $T^{*} \in \mathcal{L}(H_{2},H_{1})$ caracterizado por la propiedad
+\[
+\langle T x, y \rangle_{H_{2}} = \langle x, T^{*} y \rangle_{H_{1}}
+\quad \text{para todo } x \in H_{1}, \; y \in H_{2}.
+\]
+\end{definition}
+
+\begin{proposition}
+Para todo $T \in \mathcal{L}(H_{1},H_{2})$ existe un único operador adjunto $T^{*} \in \mathcal{L}(H_{2},H_{1})$. Además, se cumple
+\[
+\|T^{*}\| = \|T\|.
+\]
+\end{proposition}
+
+\begin{proof}
+Pendiente
+\end{proof}
+
+En el caso $H_{1} = H_{2} = H$, un operador $T \in \mathcal{L}(H)$ se denomina:
+
+\begin{itemize}
+  \item \emph{autoadjunto} si $T^{*} = T$;
+  \item \emph{positivo} si $T$ es autoadjunto y $\langle T x,x \rangle_{H} \ge 0$ para todo $x \in H$.
+\end{itemize}
+
+Este tipo de operadores aparecerá de forma natural al considerar operadores de la forma $T^{*}T$ en problemas inversos lineales.
+
+
+\subsection{Operadores compactos}
+
+Para describir ciertas características de los problemas mal puestos, resulta conveniente introducir el concepto de operador compacto. Intuitivamente, un operador compacto transforma conjuntos acotados en conjuntos relativamente compactos.
+
+\begin{definition}
+Sea $X$ e $Y$ espacios normados. Un operador lineal acotado $K : X \to Y$ se dice \emph{compacto} si para todo conjunto acotado $B \subset X$, la imagen $K(B)$ tiene cierre compacto en $Y$.
+\end{definition}
+
+En espacios de Banach (y en particular en espacios de Hilbert), esta definición es equivalente a una caracterización secuencial.
+
+\begin{proposition}
+Sea $K \in \mathcal{L}(X,Y)$, donde $X$ e $Y$ son espacios normados. El operador $K$ es compacto si y solo si para toda sucesión acotada $(x_{n}) \subset X$ la sucesión $(Kx_{n})$ posee una subsucesión convergente en $Y$.
+\end{proposition}
+
+\begin{proof}
+    Pendiente, buscar en \cite{rynne_youngson2000}
+\end{proof}
+
+
+\begin{example}
+Ejemplos típicos de operadores compactos entre espacios de Hilbert son:
+\begin{enumerate}
+  \item Operadores de rango finito: si $T : H_{1} \to H_{2}$ es lineal y $\dim(\operatorname{ran} T) < \infty$, entonces $T$ es compacto.
+  \item Ciertos operadores integrales: si $\Omega \subset \mathbb{R}^{n}$ es acotado y $k \in L^{2}(\Omega \times \Omega)$, el operador
+  \[
+  K f(x) = \int_{\Omega} k(x,y)\,f(y)\,dy
+  \]
+  define un operador compacto de $L^{2}(\Omega)$ en $L^{2}(\Omega)$ bajo hipótesis adicionales sobre el núcleo $k$ (véase \cite{kirsch2011,natterer2001}).
+\end{enumerate}
+\end{example}
+
+En espacios de Hilbert, los operadores compactos autoadjuntos admiten una descripción espectral particularmente simple.
+
+\begin{theorem}[Espectro de operadores compactos autoadjuntos]
+Sea $H$ un espacio de Hilbert y sea $K \in \mathcal{L}(H)$ un operador compacto y autoadjunto. Entonces existen una sucesión (finita o numerable) de valores propios reales $(\lambda_{j})$ con $\lambda_{j} \to 0$ y un sistema ortonormal de vectores propios $(e_{j}) \subset H$ tal que
+\[
+K x = \sum_{j} \lambda_{j} \,\langle x,e_{j} \rangle_{H}\, e_{j},
+\]
+donde la serie converge en $H$ para todo $x \in H$. Además, el espectro de $K$ está formado por $\{0\}$ y, a lo sumo, una sucesión numerable de valores propios reales de multiplicidad finita que solo pueden acumularse en $0$.
+\end{theorem}
+
+\begin{proof}
+    Pendiente
+\end{proof}
+
+Este resultado es una versión del teorema espectral para operadores compactos autoadjuntos; una demostración detallada puede consultarse en \cite{kirsch2011}. En el estudio de problemas inversos lineales, las propiedades espectrales de operadores compactos son fundamentales para entender la aparición de inestabilidades: la presencia de valores propios (o valores singulares) que tienden a cero está directamente relacionada con la falta de estabilidad de la inversión.
+
+En capítulos posteriores se revisará cómo ciertos operadores asociados a la transformada de Radon pueden modelarse, en espacios adecuados, como operadores lineales acotados que presentan características similares a las de los operadores compactos, y cómo esta estructura se refleja en la formulación y análisis de métodos de regularización.

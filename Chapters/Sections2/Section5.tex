@@ -1,0 +1,53 @@
+\section{El método de retroproyección filtrada}
+
+La fórmula de inversión obtenida en la sección anterior conduce de manera natural a un procedimiento constructivo para la reconstrucción de la función $f$ a partir de sus proyecciones. Este procedimiento es conocido como el método de \emph{retroproyección filtrada} (\emph{Filtered Backprojection}, FBP) y constituye el algoritmo analítico clásico en tomografía computarizada \cite{kak_slaney1988,natterer2001,kuchment2014}.
+
+\subsection*{Definición del operador de retroproyección}
+
+Sea $g(t,\theta)$ una función definida en $\mathbb{R} \times [0,\pi)$, que representa un conjunto de proyecciones. Se define el operador de \emph{retroproyección} $\mathcal{R}^{*}$ por
+\[
+\mathcal{R}^{*}g(x) = \int_{0}^{\pi} g(x \cdot \omega(\theta), \theta)\, d\theta, \quad x \in \mathbb{R}^{2}.
+\]
+
+Este operador asigna a cada punto $x$ la suma (en sentido integral) de los valores de $g$ sobre todas las rectas que pasan por $x$. En particular, si $g = \mathcal{R}f$, entonces $\mathcal{R}^{*}\mathcal{R}f$ corresponde a una reconstrucción no filtrada de la función $f$, que en general aparece suavizada debido a la naturaleza integral del operador.
+
+\subsection*{Formulación del método FBP}
+
+De acuerdo con la fórmula de inversión, la reconstrucción de $f$ puede expresarse como la aplicación de un operador de filtrado seguido de la retroproyección. Más precisamente, si se define el operador de filtrado $\mathcal{F}$ mediante
+\[
+\widehat{(\mathcal{F}g)}(\sigma,\theta) = |\sigma|\, \widehat{g}(\sigma,\theta),
+\]
+entonces la función $f$ puede escribirse como
+\[
+f = \mathcal{R}^{*} (\mathcal{F} \mathcal{R}f),
+\]
+salvo posibles factores constantes asociados a la normalización de la transformada de Fourier, que no afectan el análisis cualitativo del método.
+
+Esta expresión resume el método de retroproyección filtrada: primero se filtran las proyecciones en el dominio de Fourier y posteriormente se aplica el operador de retroproyección.
+
+\subsection*{Interpretación espectral}
+
+El operador de filtrado $\mathcal{F}$ es un operador multiplicador en el dominio de Fourier, determinado por el factor $|\sigma|$. Este operador amplifica las componentes de alta frecuencia de las proyecciones, compensando la pérdida de información introducida por la transformada de Radon.
+
+Desde esta perspectiva, el método FBP puede interpretarse como un procedimiento de inversión basado en el análisis espectral del operador $\mathcal{R}$. En particular, la elección del multiplicador $|\sigma|$ no es arbitraria, sino que proviene directamente de la geometría del dominio de frecuencias y de la necesidad de corregir la densidad de muestreo en coordenadas polares.
+
+\subsection*{Generalización mediante funciones de filtro}
+
+En la práctica, el uso directo del factor $|\sigma|$ puede resultar problemático en presencia de ruido, ya que amplifica significativamente las altas frecuencias. Por esta razón, es habitual considerar versiones modificadas del filtro, reemplazando $|\sigma|$ por una función $A(\sigma)$ que atenúe las componentes de alta frecuencia.
+
+De este modo, se obtiene una familia de métodos de reconstrucción de la forma
+\[
+f_{A} = \mathcal{R}^{*} (\mathcal{F}_{A} \mathcal{R}f),
+\]
+donde el operador de filtrado $\mathcal{F}_{A}$ está definido por
+\[
+\widehat{(\mathcal{F}_{A}g)}(\sigma,\theta) = A(\sigma)\, \widehat{g}(\sigma,\theta).
+\]
+
+Distintas elecciones de la función $A$ dan lugar a distintos algoritmos de reconstrucción, con diferentes propiedades en términos de resolución y estabilidad frente al ruido.
+
+\subsection*{Observaciones}
+
+La formulación anterior pone de manifiesto que el método de retroproyección filtrada puede interpretarse como la aplicación de un operador multiplicador en el dominio de Fourier seguido de una retroproyección en el dominio espacial.
+
+Este punto de vista permite analizar de manera sistemática el efecto de distintas funciones de filtro sobre la calidad de la reconstrucción y constituye la base del estudio comparativo de filtros que se desarrollará en el capítulo siguiente.

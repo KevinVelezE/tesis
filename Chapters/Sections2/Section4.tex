@@ -1,0 +1,50 @@
+\section{Fórmula de inversión de la transformada de Radon}
+
+El teorema de corte de Fourier permite obtener fórmulas explícitas para la inversión de la transformada de Radon en el modelo continuo. En esta sección se presenta una de las formas clásicas de reconstrucción de una función a partir de sus proyecciones, que constituye la base del método de retroproyección filtrada.
+
+Sea $f \in L^{2}(\mathbb{R}^{2})$ con soporte compacto y sea $\mathcal{R}f$ su transformada de Radon. A partir del teorema de corte de Fourier, es posible expresar la transformada de Fourier de $f$ en coordenadas polares como
+\[
+\widehat{f}(\sigma \,\omega(\theta)) = \widehat{\mathcal{R}f}(\sigma,\theta).
+\]
+Por tanto, la fórmula de inversión de Fourier en $\mathbb{R}^{2}$ puede escribirse en coordenadas polares en el dominio de frecuencias. Recordando que el elemento de volumen en coordenadas polares viene dado por $d\xi = |\sigma|\, d\sigma\, d\theta$, se obtiene formalmente
+\[
+f(x) = \int_{0}^{\pi} \int_{\mathbb{R}} \widehat{f}(\sigma \,\omega(\theta))\, e^{2\pi i\, \sigma\, x \cdot \omega(\theta)}\, |\sigma|\, d\sigma\, d\theta.
+\]
+Sustituyendo la expresión anterior obtenida a partir del teorema de corte de Fourier, se llega a la siguiente fórmula de inversión:
+\[
+f(x) = \int_{0}^{\pi} \int_{\mathbb{R}} \widehat{\mathcal{R}f}(\sigma,\theta)\, |\sigma|\, e^{2\pi i\, \sigma\, x \cdot \omega(\theta)}\, d\sigma\, d\theta.
+\]
+
+Dependiendo de la normalización adoptada para la transformada de Fourier, pueden aparecer factores constantes en la fórmula anterior. Estos no afectan el análisis cualitativo del método y se omiten por simplicidad.
+
+Esta expresión muestra que la reconstrucción de $f$ a partir de sus proyecciones puede realizarse aplicando una transformada de Fourier inversa en la variable $t$ para cada dirección $\theta$, seguida de una integración sobre todas las direcciones.
+
+\subsection*{Interpretación como filtrado}
+
+La fórmula anterior pone de manifiesto la aparición del factor $|\sigma|$, que actúa como un multiplicador en el dominio de Fourier. Este factor amplifica las componentes de alta frecuencia de la señal, lo cual es necesario para compensar la pérdida de información asociada a la adquisición de datos mediante integrales de línea.
+
+Desde un punto de vista operativo, la reconstrucción puede interpretarse en dos etapas:
+
+\begin{enumerate}
+    \item Para cada ángulo $\theta$, se considera la proyección $\mathcal{R}f(t,\theta)$ y se calcula su transformada de Fourier en la variable $t$.
+    
+    \item Se multiplica el resultado por el factor $|\sigma|$ y se aplica la transformada de Fourier inversa, obteniendo así una versión filtrada de la proyección.
+\end{enumerate}
+
+Este procedimiento define un operador de filtrado que actúa sobre las proyecciones antes de su retroproyección en el dominio espacial.
+
+\subsection*{Forma equivalente en el dominio espacial}
+
+La operación de multiplicación por $|\sigma|$ en el dominio de Fourier corresponde, en el dominio espacial, a una convolución con un núcleo singular. En consecuencia, la fórmula de inversión puede escribirse también en la forma
+\[
+f(x) = \int_{0}^{\pi} (\mathcal{R}f(\cdot,\theta) * h)(x \cdot \omega(\theta))\, d\theta,
+\]
+donde $h$ es un núcleo de filtrado cuya transformada de Fourier satisface $\widehat{h}(\sigma) = |\sigma|$.
+
+Esta formulación permite interpretar la reconstrucción como una combinación de filtrado unidimensional de las proyecciones seguido de una retroproyección en el plano.
+
+\subsection*{Observaciones}
+
+La fórmula de inversión presentada anteriormente constituye la base teórica del método de retroproyección filtrada. En particular, muestra que la reconstrucción de la imagen puede obtenerse aplicando un operador de filtrado en el dominio de Fourier, seguido de una retroproyección de las proyecciones filtradas.
+
+Desde esta perspectiva, el problema de reconstrucción se reduce al estudio de operadores multiplicadores en el dominio de Fourier, determinados por el factor $|\sigma|$ y, más generalmente, por otras funciones de filtrado que pueden introducirse para controlar la amplificación del ruido en las altas frecuencias. Este punto de vista será fundamental en el análisis de los distintos filtros considerados en el capítulo siguiente \cite{natterer2001,kuchment2014}.

@@ -1,0 +1,65 @@
+\section{Funciones de filtro y multiplicadores de Fourier}
+
+Como se mostró en el capítulo anterior, el método de retroproyección filtrada puede interpretarse como la aplicación de un operador multiplicador en el dominio de Fourier. En el contexto discreto, este operador está determinado por una función de filtro $A(\sigma)$ que actúa sobre la transformada de Fourier de las proyecciones.
+
+\subsection*{Filtro rampa}
+
+El filtro ideal asociado a la fórmula de inversión continua está dado por
+\[
+A(\sigma) = |\sigma|.
+\]
+Este filtro, conocido como \emph{filtro rampa}, amplifica las componentes de alta frecuencia de las proyecciones, compensando la pérdida de información introducida por la transformada de Radon.
+
+Sin embargo, en un contexto discreto y en presencia de ruido, el uso directo del filtro rampa puede resultar inestable, ya que la amplificación de altas frecuencias incrementa significativamente el efecto del ruido.
+
+\subsection*{Generalización mediante funciones de filtro}
+
+Con el fin de controlar el comportamiento del algoritmo, se considera una familia más general de filtros definidos por funciones
+\[
+A : \mathbb{R} \to \mathbb{R}, \quad \sigma \mapsto A(\sigma),
+\]
+que actúan como multiplicadores en el dominio de Fourier:
+\[
+\widehat{g}_{A}(\sigma,\theta) = A(\sigma)\,\widehat{g}(\sigma,\theta).
+\]
+
+Esta formulación permite introducir distintos tipos de filtros que modifican el contenido espectral de las proyecciones antes de la retroproyección.
+
+\subsection*{Familias de filtros consideradas}
+
+En los experimentos numéricos se consideran distintas familias de funciones de filtro, diseñadas para explorar el efecto de sus propiedades espectrales sobre la reconstrucción.
+
+En primer lugar, se consideran filtros obtenidos como perturbaciones del filtro rampa, de la forma
+\[
+A(\sigma) = |\sigma|\,(1 + \varepsilon(\sigma)),
+\]
+donde $\varepsilon(\sigma)$ es una función que introduce variaciones en el comportamiento del filtro. Estas perturbaciones permiten modificar la respuesta del filtro en distintas regiones del espectro.
+
+Asimismo, se consideran filtros con crecimiento no lineal, tales como
+\[
+A(\sigma) = \sqrt{1 + \sigma^{2}},
+\]
+así como funciones que presentan saturación en altas frecuencias, por ejemplo
+\[
+A(\sigma) = |\sigma|\,\tanh(|\sigma|).
+\]
+
+Finalmente, se introducen filtros que anulan selectivamente determinadas regiones del espectro, lo que permite estudiar el efecto de la pérdida de información en frecuencias específicas. Estos filtros se construyen imponiendo
+\[
+A(\sigma) = 0 \quad \text{para } \sigma \in I,
+\]
+donde $I \subset \mathbb{R}$ es un intervalo de frecuencias.
+
+\subsection*{Interpretación espectral}
+
+Desde el punto de vista espectral, la función $A(\sigma)$ determina el comportamiento del operador de reconstrucción en el dominio de frecuencias. En particular, el crecimiento de $A(\sigma)$ para valores grandes de $|\sigma|$ está directamente relacionado con la amplificación de altas frecuencias y, por tanto, con la capacidad de resolución del método.
+
+Por otro lado, la atenuación de $A(\sigma)$ en ciertas regiones del espectro permite reducir el efecto del ruido, pero introduce pérdida de información que puede manifestarse como artefactos o pérdida de detalle en la reconstrucción.
+
+Este compromiso entre resolución y estabilidad es una característica fundamental del problema de reconstrucción tomográfica y se manifiesta de manera explícita en la elección de la función de filtro.
+
+\subsection*{Observaciones}
+
+La formulación anterior pone de manifiesto que el método de retroproyección filtrada no está determinado de manera única, sino que da lugar a una familia de operadores parametrizados por la función de filtro $A(\sigma)$.
+
+El análisis de estas funciones desde un punto de vista espectral permite comprender de manera sistemática el comportamiento del algoritmo de reconstrucción. En particular, como se mostrará en la sección siguiente, las propiedades cualitativas de la reconstrucción dependen de manera esencial de la forma de $A(\sigma)$ y, en particular, de su comportamiento asintótico y de la distribución de sus valores en el dominio de frecuencias.

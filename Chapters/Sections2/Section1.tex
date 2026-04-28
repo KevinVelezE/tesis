@@ -1,0 +1,47 @@
+\section{Modelo matemático de la tomografía computarizada bidimensional}
+
+El objetivo de la tomografía computarizada (TC) es reconstruir una imagen del interior de un objeto a partir de mediciones externas de rayos X. En este trabajo se considerará un modelo bidimensional idealizado, en el que se estudia una sección transversal fija del objeto. Esta simplificación es estándar en la literatura y permite capturar los aspectos esenciales del problema inverso asociado a la transformada de Radon \cite{kak_slaney1988,natterer2001,kuchment2014}.
+
+Sea $\Omega \subset \mathbb{R}^{2}$ un dominio acotado que representa la sección del cuerpo que se desea estudiar. Matemáticamente, la imagen tomográfica se modela mediante una función
+\[
+f \in L^{2}(\mathbb{R}^{2})
+\]
+con soporte contenido en $\Omega$, donde $f(x)$ describe el coeficiente de atenuación lineal de los rayos X en el punto $x \in \mathbb{R}^{2}$. En la práctica, $f(x) \ge 0$ y su valor depende de las propiedades físicas del tejido (densidad, número atómico efectivo, energía del haz, entre otras).
+
+El modelo físico básico de la interacción entre los rayos X y la materia se describe mediante la ley de Beer--Lambert. En una formulación simplificada, si un haz de rayos X de intensidad inicial $I_{0}$ atraviesa el objeto a lo largo de una trayectoria $\gamma$, la intensidad medida $I$ al salir del objeto viene dada por
+\[
+I = I_{0} \exp\Bigl(- \int_{\gamma} f(x)\, ds \Bigr),
+\]
+donde $ds$ denota el elemento de longitud a lo largo de la trayectoria $\gamma$ y $f$ es el coeficiente de atenuación lineal \cite{barrett_swindell1996,barrett_myers2013}. En el modelo ideal de TC se supone que los rayos X viajan a lo largo de líneas rectas (despreciando efectos de dispersión) y que el haz es aproximadamente monocromático, de modo que la expresión anterior resulta adecuada.
+
+Tomando logaritmos en la ley de Beer--Lambert, se obtiene
+\[
+- \log\Bigl( \frac{I}{I_{0}} \Bigr) = \int_{\gamma} f(x)\, ds.
+\]
+En consecuencia, la medición obtenida en el detector (una vez normalizada por la intensidad inicial) proporciona el valor de la integral de línea de $f$ a lo largo de la trayectoria seguida por el haz. En un escáner de TC, estas trayectorias se aproximan por rectas que atraviesan el objeto en distintas direcciones y posiciones transversales.
+
+Para parametrizar de manera conveniente las rectas en el plano, se introduce el vector unitario
+\[
+\omega(\theta) = (\cos\theta,\sin\theta), \quad \theta \in [0,\pi),
+\]
+que representa la dirección del haz de rayos X, junto con su vector ortogonal
+\[
+\omega^{\perp}(\theta) = (-\sin\theta,\cos\theta).
+\]
+Una recta en el plano puede describirse de forma equivalente como
+\[
+L(t,\theta) = \{ x \in \mathbb{R}^{2} : x \cdot \omega(\theta) = t \},
+\]
+donde $t \in \mathbb{R}$ es la distancia firmada de la recta al origen y $\theta$ indica la orientación del haz. En esta notación, un rayo con dirección $\omega(\theta)$ y desplazamiento transversal $t$ atraviesa el objeto siguiendo la recta $L(t,\theta)$.
+
+De acuerdo con el modelo anterior, la medición ideal asociada a un rayo viene dada por la integral de $f$ a lo largo de $L(t,\theta)$:
+\[
+p(t,\theta) = \int_{L(t,\theta)} f(x)\, ds.
+\]
+La cantidad $p(t,\theta)$ se denomina \emph{proyección} de $f$ en la dirección $\theta$ a la posición transversal $t$. En un sistema de TC, para cada ángulo $\theta$ se registran las proyecciones correspondientes a un conjunto discreto de valores de $t$ determinados por la geometría del detector. Repitiendo este procedimiento para distintos ángulos $\theta$ (por ejemplo, uniformemente distribuidos en $[0,\pi)$), se obtiene un conjunto de datos que, al organizarse en el plano de parámetros $(t,\theta)$, constituye el denominado \emph{sinograma}, que se estudiará con más detalle en la sección siguiente \cite{kak_slaney1988}.
+
+El modelo matemático continuo de la tomografía computarizada bidimensional se puede resumir de la siguiente manera: la imagen desconocida $f$ se considera como un elemento de un espacio de Hilbert adecuado (típicamente $L^{2}(\mathbb{R}^{2})$), y el proceso de adquisición de datos se describe mediante un operador lineal que asocia a cada $f$ sus integrales de línea $p(t,\theta)$ a lo largo de las rectas $L(t,\theta)$. Este operador es precisamente la transformada de Radon, que se introduce y estudia en la sección siguiente.
+
+En la práctica, el modelo anterior se ve afectado por diversos factores que no se reflejan explícitamente en la formulación matemática ideal: espectros de energía no estrictamente monocromáticos, dispersión de fotones, ruido electrónico en los detectores, geometrías de adquisición no perfectamente paralelas, entre otros. No obstante, el modelo de integrales de línea sobre rectas proporciona una aproximación suficientemente precisa para el análisis matemático del problema inverso y constituye la base del método de retroproyección filtrada y de numerosos algoritmos de reconstrucción utilizados en la práctica \cite{kak_slaney1988,natterer2001,kuchment2014}.
+
+Desde el punto de vista analítico, este modelo conduce de manera natural al estudio de la transformada de Radon como operador lineal y a su inversión mediante técnicas basadas en la transformada de Fourier, lo cual será el punto de partida para el análisis espectral del método de retroproyección filtrada desarrollado en las secciones siguientes.

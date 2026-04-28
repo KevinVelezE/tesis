@@ -1,0 +1,59 @@
+\section{Análisis espectral de las funciones de filtro}
+
+En esta sección se estudian las propiedades espectrales de las funciones de filtro introducidas anteriormente y su relación con el comportamiento del método de retroproyección filtrada. El análisis se basa en la interpretación del algoritmo como un operador multiplicador en el dominio de Fourier.
+
+\subsection*{Comportamiento asintótico}
+
+Sea $A(\sigma)$ una función de filtro. El comportamiento de $A(\sigma)$ para valores grandes de $|\sigma|$ determina la forma en que el algoritmo trata las componentes de alta frecuencia de las proyecciones.
+
+En particular, el filtro rampa satisface
+\[
+A(\sigma) = |\sigma|,
+\]
+lo que implica un crecimiento lineal en el dominio de frecuencias. Este crecimiento es el mínimo necesario para compensar la pérdida de información introducida por la transformada de Radon, como se deduce de la fórmula de inversión continua.
+
+Cuando se consideran filtros con crecimiento distinto, como
+\[
+A(\sigma) = \sqrt{1+\sigma^{2}},
+\]
+o funciones con saturación en altas frecuencias, el balance entre resolución y estabilidad se ve modificado. En general, un crecimiento más rápido tiende a mejorar la resolución, pero incrementa la sensibilidad al ruido, mientras que un crecimiento más lento reduce el ruido a costa de perder detalles finos en la reconstrucción.
+
+\subsection*{Modulación del espectro}
+
+Los filtros considerados pueden interpretarse como moduladores del espectro de las proyecciones. Dado que la reconstrucción final depende de la transformada de Fourier de las proyecciones filtradas, la función $A(\sigma)$ actúa directamente sobre la distribución de energía en el dominio de frecuencias.
+
+En el caso de filtros de la forma
+\[
+A(\sigma) = |\sigma|\,(1 + \varepsilon(\sigma)),
+\]
+la función $\varepsilon(\sigma)$ introduce variaciones locales en la amplificación del espectro, lo que permite enfatizar o atenuar determinadas bandas de frecuencia. Estas modificaciones se reflejan en cambios visibles en la reconstrucción, tales como realce de bordes o aparición de artefactos.
+
+\subsection*{Efecto de la anulación de frecuencias}
+
+Un caso particularmente ilustrativo es el de filtros que anulan ciertas regiones del espectro, es decir, funciones $A(\sigma)$ que satisfacen
+\[
+A(\sigma) = 0 \quad \text{para } \sigma \in I,
+\]
+donde $I$ es un intervalo de frecuencias.
+
+En este caso, las componentes espectrales correspondientes se eliminan completamente del proceso de reconstrucción. Como consecuencia, la imagen reconstruida presenta pérdida de información estructural, que puede manifestarse en forma de artefactos o distorsiones geométricas.
+
+Este fenómeno pone de manifiesto la importancia de la cobertura espectral: para lograr una reconstrucción fiel, es necesario que el filtro preserve adecuadamente la información en todas las regiones relevantes del dominio de frecuencias.
+
+\subsection*{Relación con el operador de reconstrucción}
+
+Desde un punto de vista funcional, el método de reconstrucción puede interpretarse como la aplicación de un operador lineal cuyo comportamiento está determinado por la función $A(\sigma)$. En particular, el operador inducido en el dominio de Fourier tiene como símbolo precisamente la función $A(\sigma)$.
+
+Este punto de vista permite analizar el problema de reconstrucción en términos de operadores pseudo-diferenciales, donde la función $A(\sigma)$ actúa como símbolo del operador. En este contexto, las propiedades del operador —tales como su regularidad y estabilidad— están directamente relacionadas con el comportamiento de $A(\sigma)$.
+
+\subsection*{Compromiso entre resolución y estabilidad}
+
+El análisis anterior muestra que la elección de la función de filtro implica un compromiso entre resolución y estabilidad. Por un lado, la amplificación de altas frecuencias permite recuperar detalles finos de la imagen, pero también amplifica el ruido presente en los datos. Por otro lado, la atenuación del espectro reduce el ruido, pero introduce pérdida de información.
+
+Este compromiso es inherente al problema de reconstrucción tomográfica y no puede eliminarse completamente. Sin embargo, el análisis espectral de las funciones de filtro proporciona una herramienta sistemática para comprender y controlar este fenómeno.
+
+\subsection*{Observaciones}
+
+El estudio de las funciones de filtro desde un punto de vista espectral permite interpretar el método de retroproyección filtrada como una familia de operadores cuya acción está determinada por su comportamiento en el dominio de frecuencias.
+
+En particular, las propiedades cualitativas de la reconstrucción dependen esencialmente de la forma de la función $A(\sigma)$, y en especial de su crecimiento asintótico y de su capacidad para preservar la información espectral relevante. Este análisis será ilustrado en la sección siguiente mediante experimentos numéricos.

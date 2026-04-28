@@ -1,0 +1,15 @@
+\chapter{Análisis numérico y espectral del método de retroproyección filtrada}
+
+En el capítulo anterior se desarrolló el modelo continuo de la tomografía computarizada bidimensional y se introdujo la transformada de Radon como operador lineal, así como su inversión mediante el método de retroproyección filtrada. En particular, se estableció que la reconstrucción de una función a partir de sus proyecciones puede interpretarse en términos de operadores multiplicadores en el dominio de Fourier.
+
+El objetivo de este capítulo es trasladar dicho marco teórico a un contexto discreto, con el fin de implementar y analizar numéricamente el método de retroproyección filtrada. Para ello, se introduce una discretización del problema tomográfico, se describe el algoritmo de reconstrucción y se estudia el papel de las funciones de filtro desde un punto de vista espectral.
+
+En particular, se considera una familia de métodos de reconstrucción obtenidos al reemplazar el filtro ideal por funciones generales en el dominio de frecuencias. Este enfoque permite analizar de manera sistemática el efecto de distintos multiplicadores de Fourier sobre la calidad de la reconstrucción, poniendo de manifiesto la relación entre las propiedades espectrales del filtro y fenómenos como la resolución y la estabilidad frente al ruido.
+
+Finalmente, se presentan experimentos numéricos que ilustran el comportamiento de los distintos filtros considerados, utilizando datos simulados a partir de phantoms sintéticos. Estos resultados permiten validar las observaciones teóricas y constituyen la base para el análisis comparativo desarrollado en este capítulo.
+
+\input{Chapters/Sections3/Section1}
+\input{Chapters/Sections3/Section2}
+\input{Chapters/Sections3/Section3}
+\input{Chapters/Sections3/Section4}
+\input{Chapters/Sections3/Section5}

@@ -1,0 +1,44 @@
+\section{Teorema de corte de Fourier}
+
+El resultado fundamental que conecta la transformada de Radon con la transformada de Fourier es el denominado \emph{teorema de corte de Fourier} (también conocido como \emph{teorema de la sección central}). Este teorema establece una relación precisa entre la transformada de Fourier de una función en el plano y la transformada de Fourier de sus proyecciones.
+
+Sea $f \in L^{2}(\mathbb{R}^{2})$ con soporte compacto. Denotemos por $\widehat{f}$ la transformada de Fourier bidimensional de $f$, definida por
+\[
+\widehat{f}(\xi) = \int_{\mathbb{R}^{2}} f(x)\, e^{-2\pi i\, x \cdot \xi}\, dx, \quad \xi \in \mathbb{R}^{2}.
+\]
+Asimismo, para cada $\theta \in [0,\pi)$, consideremos la función $t \mapsto \mathcal{R}f(t,\theta)$ y su transformada de Fourier unidimensional en la variable $t$, definida por
+\[
+\widehat{\mathcal{R}f}(\sigma,\theta) = \int_{\mathbb{R}} \mathcal{R}f(t,\theta)\, e^{-2\pi i\, t \sigma}\, dt, \quad \sigma \in \mathbb{R}.
+\]
+
+\begin{theorem}[Teorema de corte de Fourier]
+Sea $f \in L^{2}(\mathbb{R}^{2})$ con soporte compacto. Entonces, para todo $\theta \in [0,\pi)$ y $\sigma \in \mathbb{R}$, se cumple
+\[
+\widehat{\mathcal{R}f}(\sigma,\theta) = \widehat{f}(\sigma\, \omega(\theta)),
+\]
+donde $\omega(\theta) = (\cos\theta,\sin\theta)$.
+\end{theorem}
+
+Este resultado afirma que la transformada de Fourier de la proyección de $f$ en la dirección $\theta$ coincide con la restricción de la transformada de Fourier bidimensional de $f$ a la recta que pasa por el origen en la dirección $\omega(\theta)$, donde se ha identificado $\xi = \sigma \omega(\theta)$ como coordenadas polares en el dominio de frecuencias. En otras palabras, cada proyección proporciona información sobre $\widehat{f}$ a lo largo de una recta en el dominio de frecuencias.
+
+\subsection*{Interpretación geométrica}
+
+El teorema de corte de Fourier admite una interpretación geométrica particularmente clara. Para cada ángulo $\theta$, la función $\widehat{\mathcal{R}f}(\sigma,\theta)$ describe los valores de $\widehat{f}$ sobre la recta
+\[
+\{ \sigma\, \omega(\theta) : \sigma \in \mathbb{R} \} \subset \mathbb{R}^{2}.
+\]
+Al variar $\theta$ en $[0,\pi)$, estas rectas cubren el plano de frecuencias. Por tanto, el conjunto de todas las proyecciones $\mathcal{R}f(t,\theta)$ contiene, en principio, toda la información necesaria para reconstruir $\widehat{f}$ y, en consecuencia, la función original $f$.
+
+\subsection*{Consecuencias analíticas}
+
+El teorema de corte de Fourier proporciona el mecanismo fundamental para la inversión de la transformada de Radon. En efecto, si se conocen las proyecciones $\mathcal{R}f(t,\theta)$ para todos los valores de $t$ y $\theta$, es posible reconstruir la transformada de Fourier $\widehat{f}$ evaluándola sobre líneas radiales en el plano de frecuencias.
+
+Sin embargo, esta reconstrucción no es inmediata, ya que la parametrización polar del dominio de frecuencias introduce un factor de densidad que debe ser compensado. Este fenómeno se refleja en la aparición de un factor de la forma $|\sigma|$ en las fórmulas de inversión, que actúa como un filtro en el dominio de Fourier \cite{natterer2001,kuchment2014}.
+
+En consecuencia, el teorema de corte de Fourier no sólo proporciona una descripción geométrica del problema, sino que también explica la estructura de los operadores de inversión que se estudiarán en la sección siguiente.
+
+\subsection*{Observaciones}
+
+El teorema de corte de Fourier constituye la base teórica del método de retroproyección filtrada. En particular, muestra que la reconstrucción de $f$ puede realizarse mediante una combinación de transformadas de Fourier unidimensionales, seguida de un filtrado adecuado en el dominio de frecuencias y una posterior retroproyección.
+
+Desde esta perspectiva, el proceso de filtrado puede interpretarse como la aplicación de un operador multiplicador en el dominio de Fourier, lo que permite analizar el comportamiento del algoritmo de reconstrucción en función de las propiedades espectrales del filtro. Este punto de vista será fundamental en el análisis desarrollado en las secciones siguientes.

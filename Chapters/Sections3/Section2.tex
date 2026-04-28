@@ -1,0 +1,66 @@
+\section{Retroproyección y reconstrucción discreta}
+
+A partir de la discretización introducida en la sección anterior, es posible definir una versión discreta del operador de retroproyección y del método de reconstrucción asociado. Esta formulación constituye la base para la implementación numérica del método de retroproyección filtrada.
+
+\subsection*{Retroproyección discreta}
+
+Sea $g(r,\theta)$ un sinograma discreto asociado a una imagen $f \in \mathbb{R}^{N \times N}$. La retroproyección discreta consiste en aproximar el operador continuo
+\[
+\mathcal{R}^{*}g(x) = \int_{0}^{\pi} g(x \cdot \omega(\theta), \theta)\, d\theta
+\]
+mediante una suma finita sobre un conjunto discreto de ángulos $\theta_k$:
+\[
+(\mathcal{R}^{*}_{d} g)(x_{i},y_{j}) \approx \sum_{k=0}^{M-1} g(x_{i} \cdot \omega(\theta_k), \theta_k)\, \Delta \theta.
+\]
+
+En esta expresión, los valores $g(x_{i} \cdot \omega(\theta_k), \theta_k)$ no coinciden, en general, con los nodos de la discretización en la variable $r$. Por esta razón, es necesario emplear procedimientos de interpolación para evaluar el sinograma en puntos intermedios.
+
+La retroproyección discreta así definida produce una aproximación de la imagen original, aunque en general aparece suavizada debido a la naturaleza integral del operador.
+
+\subsection*{Reconstrucción mediante retroproyección no filtrada}
+
+Como paso preliminar, es posible considerar la reconstrucción obtenida aplicando directamente la retroproyección al sinograma, es decir,
+\[
+f_{\mathrm{BP}} = \mathcal{R}^{*}_{d} g.
+\]
+
+Esta reconstrucción, conocida como \emph{retroproyección no filtrada}, presenta típicamente un efecto de difuminado, ya que no compensa la pérdida de información en altas frecuencias introducida por la transformada de Radon. Este fenómeno ya fue anticipado en el análisis continuo del capítulo anterior.
+
+\subsection*{Incorporación del filtrado}
+
+Para obtener una reconstrucción más precisa, es necesario introducir un paso de filtrado previo a la retroproyección. En el contexto discreto, este proceso se implementa mediante el uso de la transformada discreta de Fourier en la variable $r$.
+
+Para cada ángulo $\theta_k$, se considera la transformada de Fourier discreta de la proyección
+\[
+\widehat{g}(\sigma,\theta_k),
+\]
+que en la práctica se calcula mediante algoritmos rápidos de Fourier (FFT). A continuación, se multiplica por una función de filtro $A(\sigma)$ definida en el dominio de frecuencias, obteniendo
+\[
+\widehat{g}_{A}(\sigma,\theta_k) = A(\sigma)\,\widehat{g}(\sigma,\theta_k).
+\]
+
+Finalmente, se aplica la transformada inversa de Fourier para obtener la proyección filtrada en el dominio espacial:
+\[
+g_{A}(r,\theta_k).
+\]
+
+\subsection*{Método de retroproyección filtrada}
+
+Una vez obtenidas las proyecciones filtradas, la reconstrucción se realiza mediante la retroproyección discreta:
+\[
+f_{A} = \mathcal{R}^{*}_{d} g_{A}.
+\]
+
+Este procedimiento constituye la versión discreta del método de retroproyección filtrada, que puede interpretarse como una aproximación del operador continuo
+\[
+f = \mathcal{R}^{*} \bigl( \mathcal{F}_{A} \mathcal{R}f \bigr),
+\]
+donde $\mathcal{F}_{A}$ es un operador multiplicador en el dominio de Fourier.
+
+Dependiendo de la normalización adoptada en la transformada discreta de Fourier, pueden aparecer factores constantes en la implementación del método. Estos no afectan el comportamiento cualitativo de la reconstrucción y se omiten en la formulación presentada.
+
+\subsection*{Observaciones}
+
+El esquema descrito permite implementar de manera eficiente el método de retroproyección filtrada en un entorno discreto. Sin embargo, su desempeño depende de varios factores, entre los que destacan la resolución de la malla, la discretización angular y la elección de la función de filtro $A(\sigma)$.
+
+En particular, el análisis del efecto de distintas funciones de filtro sobre la calidad de la reconstrucción constituye el objetivo principal de las secciones siguientes, donde se estudiará la relación entre sus propiedades espectrales y el comportamiento del algoritmo.

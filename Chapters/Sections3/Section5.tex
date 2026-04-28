@@ -1,0 +1,51 @@
+\section{Experimentos numéricos}
+
+En esta sección se presentan los resultados obtenidos mediante la implementación discreta del método de retroproyección filtrada descrita en las secciones anteriores. El objetivo es ilustrar el efecto de distintas funciones de filtro sobre la calidad de la reconstrucción y validar las observaciones realizadas en el análisis espectral.
+
+\subsection*{Configuración del experimento}
+
+Se considera un \emph{phantom} sintético definido sobre el dominio $[-1,1]^2$, discretizado mediante una malla uniforme de tamaño $256 \times 256$. Este phantom contiene estructuras geométricas con distintos niveles de intensidad, lo que permite evaluar la capacidad de resolución del método de reconstrucción.
+
+A partir de esta imagen, se calcula el sinograma discreto utilizando un conjunto de ángulos equiespaciados en el intervalo $[0,\pi)$. Las proyecciones se obtienen mediante rotaciones de la imagen seguidas de sumas discretas, como se describió en la Sección 3.1.
+
+En algunos experimentos, se consideran versiones perturbadas del sinograma mediante la adición de ruido, con el fin de analizar la estabilidad del método frente a errores en los datos.
+
+\subsection*{Reconstrucción mediante FBP}
+
+La reconstrucción de la imagen se realiza aplicando el método de retroproyección filtrada. Para cada proyección, se calcula su transformada discreta de Fourier, se aplica una función de filtro $A(\sigma)$ en el dominio de frecuencias y, posteriormente, se obtiene la proyección filtrada mediante la transformada inversa.
+
+Finalmente, las proyecciones filtradas se retroproyectan sobre la malla espacial para obtener la imagen reconstruida.
+
+Como referencia, se considera en primer lugar el filtro rampa
+\[
+A(\sigma) = |\sigma|,
+\]
+que corresponde al caso ideal derivado del modelo continuo.
+
+\subsection*{Comparación de funciones de filtro}
+
+Se analizan distintas funciones de filtro $A(\sigma)$, incluyendo perturbaciones del filtro rampa, funciones con crecimiento no lineal y filtros que atenúan o anulan determinadas regiones del espectro.
+
+Las Figuras correspondientes muestran, para cada caso, la imagen original, el sinograma y las reconstrucciones obtenidas mediante los distintos filtros. Estas imágenes permiten comparar visualmente el efecto de cada función de filtro sobre la calidad de la reconstrucción.
+
+En particular, se observa que:
+
+\begin{itemize}
+    \item Los filtros con crecimiento similar al de $|\sigma|$ permiten recuperar con mayor fidelidad los detalles finos de la imagen, aunque son más sensibles al ruido.
+    
+    \item Los filtros que atenúan las altas frecuencias producen reconstrucciones más suaves, pero con pérdida de resolución en los bordes.
+    
+    \item La eliminación de determinadas bandas de frecuencia genera artefactos visibles en la reconstrucción, lo que confirma la importancia de la cobertura espectral.
+\end{itemize}
+
+\subsection*{Discusión}
+
+Los resultados numéricos obtenidos son coherentes con el análisis espectral desarrollado en la sección anterior. En efecto, la calidad de la reconstrucción depende de manera esencial de la forma de la función de filtro $A(\sigma)$.
+
+En particular, el comportamiento asintótico de $A(\sigma)$ determina el grado de amplificación de las altas frecuencias, mientras que su forma global controla la distribución de energía en el dominio de Fourier. Estas propiedades se reflejan directamente en las características visuales de las reconstrucciones.
+
+\subsection*{Observaciones finales}
+
+Los experimentos presentados muestran que el método de retroproyección filtrada puede interpretarse como una familia de algoritmos parametrizados por la función de filtro $A(\sigma)$. Esta perspectiva permite analizar de manera sistemática el efecto de distintas elecciones del filtro y proporciona un marco conceptual unificado para el estudio de métodos de reconstrucción tomográfica.
+
+En particular, el análisis combinado de herramientas teóricas y experimentales permite comprender el papel de los multiplicadores de Fourier en el proceso de reconstrucción y constituye una base sólida para el diseño y evaluación de nuevos filtros.

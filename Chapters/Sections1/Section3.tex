@@ -1,0 +1,122 @@
+\section{Problemas inversos lineales y regularización}
+
+En esta sección se introduce la formulación abstracta de los problemas inversos lineales en espacios de Hilbert y se presenta el planteamiento clásico de Hadamard sobre problemas bien y mal planteados. Finalmente, se describe de manera preliminar el esquema de regularización de Tikhonov, que se utilizará posteriormente en el estudio del problema inverso asociado a la transformada de Radon. Las referencias principales son \cite{kirsch2011,natterer2001,kuchment2014}.
+
+
+\subsection{Formulación de Hadamard}
+
+Sea $X$ un espacio de Hilbert que modela el espacio de parámetros o incógnitas, y sea $Y$ otro espacio de Hilbert que modela el espacio de datos. Un problema directo lineal se puede formular abstractamente como
+\[
+K x = y, \quad x \in X, \; y \in Y,
+\]
+donde $K \in \mathcal{L}(X,Y)$ es un operador lineal acotado conocido. Dado $x \in X$, el valor $y = Kx$ representa los datos que se observan. El problema inverso correspondiente consiste en determinar $x$ a partir de una observación (aproximada) de $y$.
+
+La noción clásica de problema bien planteado se debe a Hadamard.
+
+\begin{definition}[Hadamard]
+Sea $F : X \to Y$ una aplicación. Se dice que el problema
+\[
+F(x) = y
+\]
+está \emph{bien planteado} (o es \emph{bien condicionado}) en el sentido de Hadamard si se verifican las siguientes condiciones:
+\begin{enumerate}
+  \item \textbf{Existencia:} Para todo $y$ en un conjunto de datos de interés, existe al menos un $x \in X$ tal que $F(x) = y$.
+  \item \textbf{Unicidad:} Para todo $y$ en dicho conjunto, existe a lo sumo un $x \in X$ que satisfaga $F(x) = y$.
+  \item \textbf{Dependencia continua de los datos:} La solución depende continuamente de los datos; más precisamente, si $(y_{n})$ es una sucesión en $Y$ con $y_{n} \to y$ y $x_{n}$ es la solución correspondiente a $y_{n}$, entonces $x_{n} \to x$ en $X$.
+\end{enumerate}
+Si alguna de estas condiciones falla, se dice que el problema está \emph{mal planteado} (o es \emph{mal condicionado}).
+\end{definition}
+
+En el caso lineal, cuando $F = K \in \mathcal{L}(X,Y)$, la existencia y la unicidad están relacionadas con las propiedades algebraicas de $K$ (núcleo y rango), mientras que la dependencia continua se vincula con la continuidad del operador inverso. Esta última es precisamente la fuente de las inestabilidades características de muchos problemas inversos.
+
+
+\subsection{Problemas inversos lineales en espacios de Hilbert}
+
+En lo que sigue, se considera un operador lineal acotado $K \in \mathcal{L}(X,Y)$ entre espacios de Hilbert reales $X$ e $Y$. El problema directo consiste en calcular $y = Kx$ a partir de $x \in X$. El problema inverso asociado consiste en recuperar $x$ a partir de $y$.
+
+Desde un punto de vista abstracto, el problema inverso lineal puede interpretarse como el problema de invertir el operador $K$. Si $K$ es biyectivo, el teorema de la función inversa implica que $K^{-1} : Y \to X$ es también lineal y acotado, de modo que el problema está bien planteado en el sentido de Hadamard \cite{rynne_youngson2000}. Sin embargo, en la mayoría de las aplicaciones de tomografía, el operador que modela el problema inverso no es biyectivo sobre todo $Y$, o su inverso no es continuo en el rango de $K$.
+
+Incluso cuando $K$ es inyectivo, suele ocurrir que el rango $\operatorname{ran} K$ no es cerrado en $Y$. En tal caso, el operador inverso
+\[
+K^{-1} : \operatorname{ran} K \to X,
+\]
+definido por $K^{-1}(y) = x$ cuando $Kx = y$, no es acotado. De manera equivalente, pequeñas perturbaciones de los datos en $\operatorname{ran} K$ pueden producir grandes variaciones en la solución. Esta falta de estabilidad es una característica típica de los problemas inversos lineales mal planteados \cite{kirsch2011}.
+
+El siguiente resultado proporciona un criterio útil en el caso inyectivo.
+
+\begin{proposition}
+Sea $K \in \mathcal{L}(X,Y)$ un operador lineal acotado e inyectivo entre espacios de Hilbert. Entonces el operador inverso
+\[
+K^{-1} : \operatorname{ran} K \to X
+\]
+es continuo si y solo si el subespacio $\operatorname{ran} K$ es cerrado en $Y$.
+\end{proposition}
+
+\begin{proof}
+Pendiente \cite{kirsch2011}
+\end{proof}
+
+En particular, si $K$ es inyectivo y compacto entre espacios de Hilbert infinitodimensionales, se tiene que $\operatorname{ran} K$ no puede ser cerrado salvo en el caso trivial; por tanto, el problema inverso asociado es mal planteado en el sentido de Hadamard. Esta situación es típica de muchos problemas inversos modelados por operadores integrales, donde la compacidad refleja un efecto de suavizado en las soluciones \cite{kirsch2011,natterer2001}.
+
+En tomografía computarizada, el operador asociado a la transformada de Radon (en espacios adecuados de funciones) presenta un comportamiento análogo al de ciertos operadores compactos o ``cuasi compactos'', en el sentido de que su inversión amplifica inevitablemente el ruido de alta frecuencia presente en los datos. Esta es la razón fundamental por la que, en la práctica, no es posible realizar una inversión ``exacta'' de $K$ a partir de datos ruidosos, y resulta necesario introducir métodos de regularización.
+
+
+\subsection{Regularización de Tikhonov en el caso lineal}
+
+Una estrategia estándar para tratar problemas inversos lineales mal planteados es sustituir la ecuación $Kx = y$ por un problema variacional bien planteado que compatibilice el ajuste a los datos con un término de penalización que favorezca soluciones ``regulares''. Uno de los métodos más utilizados es la regularización de Tikhonov. La presentación que sigue se basa en \cite{kirsch2011}.
+
+Sea $K \in \mathcal{L}(X,Y)$ un operador lineal acotado entre espacios de Hilbert, y supóngase que los datos disponibles $y^{\delta} \in Y$ satisfacen
+\[
+\|y^{\delta} - y\|_{Y} \le \delta,
+\]
+donde $y \in Y$ denota los datos exactos (desconocidos) y $\delta \ge 0$ es un parámetro que representa el nivel de ruido.
+
+Para un parámetro de regularización $\alpha > 0$, se considera el funcional de Tikhonov
+\[
+J_{\alpha}(x; y^{\delta}) 
+= \|Kx - y^{\delta}\|_{Y}^{2} + \alpha \,\|x\|_{X}^{2}, 
+\quad x \in X.
+\]
+
+\begin{definition}[Solución de Tikhonov]
+Sea $\alpha > 0$ y $y^{\delta} \in Y$. Una \emph{solución de Tikhonov} para los datos $y^{\delta}$ con parámetro $\alpha$ es un punto $x_{\alpha}^{\delta} \in X$ que minimiza el funcional $J_{\alpha}(\cdot; y^{\delta})$, es decir,
+\[
+x_{\alpha}^{\delta} \in \arg\min_{x \in X} J_{\alpha}(x; y^{\delta}).
+\]
+\end{definition}
+
+El siguiente resultado garantiza la existencia y unicidad de la solución de Tikhonov, así como la ecuación normal que satisface.
+
+\begin{proposition}
+Sea $K \in \mathcal{L}(X,Y)$ y $\alpha > 0$. Para todo $y^{\delta} \in Y$ existe un único minimizador $x_{\alpha}^{\delta} \in X$ del funcional $J_{\alpha}(\cdot; y^{\delta})$. Además, $x_{\alpha}^{\delta}$ está caracterizado por la ecuación normal
+\[
+(K^{*} K + \alpha I) x_{\alpha}^{\delta} = K^{*} y^{\delta},
+\]
+donde $K^{*} \in \mathcal{L}(Y,X)$ denota el adjunto de $K$ e $I$ es el operador identidad en $X$.
+\end{proposition}
+
+\begin{proof}[Idea de la prueba]
+El funcional $J_{\alpha}(\cdot; y^{\delta})$ es continuo, estrictamente convexo y coercivo en $X$, debido al término $\alpha \|x\|_{X}^{2}$ con $\alpha>0$. Estas propiedades garantizan la existencia y unicidad del minimizador (véase \cite{kirsch2011}). Para obtener la ecuación normal, se calcula la derivada direccional de $J_{\alpha}$ en la dirección $h \in X$:
+\[
+\frac{d}{dt} J_{\alpha}(x + t h; y^{\delta})\bigg|_{t=0}
+= 2 \langle Kx - y^{\delta}, K h \rangle_{Y} + 2 \alpha \langle x,h \rangle_{X}.
+\]
+Imponiendo que esta derivada se anula para todo $h \in X$ en el minimizador $x = x_{\alpha}^{\delta}$ y utilizando la definición de operador adjunto, se obtiene
+\[
+\langle K^{*}(Kx_{\alpha}^{\delta} - y^{\delta}) + \alpha x_{\alpha}^{\delta}, h \rangle_{X} = 0
+\quad \text{para todo } h \in X,
+\]
+lo cual implica
+\[
+K^{*}(Kx_{\alpha}^{\delta} - y^{\delta}) + \alpha x_{\alpha}^{\delta} = 0,
+\]
+es decir, $(K^{*}K + \alpha I)x_{\alpha}^{\delta} = K^{*} y^{\delta}$.
+\end{proof}
+
+La regularización de Tikhonov define, para cada $\alpha>0$, un operador lineal y acotado $R_{\alpha} : Y \to X$ dado por
+\[
+R_{\alpha} y^{\delta} = x_{\alpha}^{\delta} = (K^{*}K + \alpha I)^{-1} K^{*} y^{\delta}.
+\]
+El análisis detallado de las propiedades de $R_{\alpha}$ y del comportamiento de $x_{\alpha}^{\delta}$ cuando $\alpha \to 0$ y $\delta \to 0$ se abordará en un capítulo posterior. De forma muy general, el objetivo es elegir una familia de parámetros $\alpha = \alpha(\delta)$ que permita garantizar la convergencia de $x_{\alpha(\delta)}^{\delta}$ hacia una solución ``generalizada'' del problema inverso $Kx = y$ cuando el nivel de ruido $\delta$ tiende a cero \cite{kirsch2011}.
+
+En el contexto de la tomografía computarizada, la regularización de Tikhonov proporciona un marco natural para estabilizar la reconstrucción de imágenes a partir de sinogramas ruidosos y/o incompletos, ya sea en forma abstracta (como en la ecuación anterior) o incorporando explícitamente términos de suavidad basados en normas de espacios de Sobolev, como las introducidas en la sección anterior.
