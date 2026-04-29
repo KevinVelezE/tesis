@@ -1,6 +1,10 @@
 \section{Funciones de filtro y multiplicadores de Fourier}
 
-Como se mostró en el capítulo anterior, el método de retroproyección filtrada puede interpretarse como la aplicación de un operador multiplicador en el dominio de Fourier. En el contexto discreto, este operador está determinado por una función de filtro $A(\sigma)$ que actúa sobre la transformada de Fourier de las proyecciones.
+Como se mostró en la sección anterior, el método de retroproyección filtrada puede interpretarse como una aproximación del operador inverso de la transformada de Radon. Desde un punto de vista analítico, este proceso está gobernado por el operador compuesto $\mathcal{R}^{*}\mathcal{R}$, el cual actúa como un operador de suavizado.
+
+En el dominio de Fourier, este operador puede describirse mediante un multiplicador, lo que permite interpretar el problema de reconstrucción como la inversión de un operador pseudo-diferencial. En particular, la fórmula de inversión continua sugiere que el operador inverso está asociado a un multiplicador proporcional a $|\sigma|$.
+
+En este contexto, el método de retroproyección filtrada introduce una función de filtro $A(\sigma)$ que actúa como símbolo del operador de reconstrucción. Esta formulación permite estudiar de manera sistemática el efecto de distintas elecciones de $A(\sigma)$ sobre el comportamiento del algoritmo, en particular en términos de resolución y estabilidad.
 
 \subsection*{Filtro rampa}
 
@@ -10,7 +14,7 @@ A(\sigma) = |\sigma|.
 \]
 Este filtro, conocido como \emph{filtro rampa}, amplifica las componentes de alta frecuencia de las proyecciones, compensando la pérdida de información introducida por la transformada de Radon.
 
-Sin embargo, en un contexto discreto y en presencia de ruido, el uso directo del filtro rampa puede resultar inestable, ya que la amplificación de altas frecuencias incrementa significativamente el efecto del ruido.
+Desde el punto de vista teórico, este crecimiento lineal es el necesario para invertir el efecto de suavizado del operador $\mathcal{R}^{*}\mathcal{R}$. Sin embargo, en un contexto discreto y en presencia de ruido, el uso directo del filtro rampa puede resultar inestable, ya que la amplificación de altas frecuencias incrementa significativamente el efecto del ruido.
 
 \subsection*{Generalización mediante funciones de filtro}
 
@@ -23,36 +27,43 @@ que actúan como multiplicadores en el dominio de Fourier:
 \widehat{g}_{A}(\sigma,\theta) = A(\sigma)\,\widehat{g}(\sigma,\theta).
 \]
 
-Esta formulación permite introducir distintos tipos de filtros que modifican el contenido espectral de las proyecciones antes de la retroproyección.
+De este modo, el método de reconstrucción puede interpretarse como la aplicación de un operador cuyo símbolo está dado por la función $A(\sigma)$. Esta perspectiva permite modificar de manera controlada el comportamiento espectral del algoritmo mediante la elección adecuada del filtro.
 
 \subsection*{Familias de filtros consideradas}
 
-En los experimentos numéricos se consideran distintas familias de funciones de filtro, diseñadas para explorar el efecto de sus propiedades espectrales sobre la reconstrucción.
+Con el fin de analizar de manera sistemática el comportamiento del método de reconstrucción, se consideran distintas familias de funciones de filtro, clasificadas según sus propiedades espectrales:
 
-En primer lugar, se consideran filtros obtenidos como perturbaciones del filtro rampa, de la forma
-\[
-A(\sigma) = |\sigma|\,(1 + \varepsilon(\sigma)),
-\]
-donde $\varepsilon(\sigma)$ es una función que introduce variaciones en el comportamiento del filtro. Estas perturbaciones permiten modificar la respuesta del filtro en distintas regiones del espectro.
+\begin{itemize}
+    \item \textbf{Filtros tipo rampa perturbada:}
+    \[
+    A(\sigma) = |\sigma|\,(1 + \varepsilon(\sigma)),
+    \]
+    donde $\varepsilon(\sigma)$ es una función que introduce variaciones locales en el espectro. Estos filtros permiten modificar selectivamente la amplificación en distintas regiones de frecuencia.
 
-Asimismo, se consideran filtros con crecimiento no lineal, tales como
-\[
-A(\sigma) = \sqrt{1 + \sigma^{2}},
-\]
-así como funciones que presentan saturación en altas frecuencias, por ejemplo
-\[
-A(\sigma) = |\sigma|\,\tanh(|\sigma|).
-\]
+    \item \textbf{Filtros de crecimiento no lineal:}
+    \[
+    A(\sigma) = \sqrt{1 + \sigma^{2}},
+    \]
+    los cuales presentan un crecimiento distinto al lineal y permiten estudiar variaciones en la recuperación de altas frecuencias.
 
-Finalmente, se introducen filtros que anulan selectivamente determinadas regiones del espectro, lo que permite estudiar el efecto de la pérdida de información en frecuencias específicas. Estos filtros se construyen imponiendo
-\[
-A(\sigma) = 0 \quad \text{para } \sigma \in I,
-\]
-donde $I \subset \mathbb{R}$ es un intervalo de frecuencias.
+    \item \textbf{Filtros con saturación:}
+    \[
+    A(\sigma) = |\sigma|\,\tanh(|\sigma|),
+    \]
+    que limitan la amplificación en altas frecuencias, introduciendo un efecto regularizador.
+
+    \item \textbf{Filtros con anulación espectral:}
+    \[
+    A(\sigma) = 0 \quad \text{para } \sigma \in I,
+    \]
+    donde $I \subset \mathbb{R}$ es un intervalo. Estos filtros permiten analizar el efecto de la pérdida de información en bandas específicas del espectro.
+\end{itemize}
+
+Esta clasificación permite organizar de manera coherente los experimentos numéricos y relacionar directamente las propiedades de cada filtro con su comportamiento en la reconstrucción.
 
 \subsection*{Interpretación espectral}
 
-Desde el punto de vista espectral, la función $A(\sigma)$ determina el comportamiento del operador de reconstrucción en el dominio de frecuencias. En particular, el crecimiento de $A(\sigma)$ para valores grandes de $|\sigma|$ está directamente relacionado con la amplificación de altas frecuencias y, por tanto, con la capacidad de resolución del método.
+Desde el punto de vista espectral, la función $A(\sigma)$ determina completamente el comportamiento del operador de reconstrucción en el dominio de frecuencias. En particular, el crecimiento de $A(\sigma)$ para valores grandes de $|\sigma|$ está directamente relacionado con la amplificación de altas frecuencias y, por tanto, con la capacidad de resolución del método.
 
 Por otro lado, la atenuación de $A(\sigma)$ en ciertas regiones del espectro permite reducir el efecto del ruido, pero introduce pérdida de información que puede manifestarse como artefactos o pérdida de detalle en la reconstrucción.
 
@@ -62,4 +73,6 @@ Este compromiso entre resolución y estabilidad es una característica fundament
 
 La formulación anterior pone de manifiesto que el método de retroproyección filtrada no está determinado de manera única, sino que da lugar a una familia de operadores parametrizados por la función de filtro $A(\sigma)$.
 
-El análisis de estas funciones desde un punto de vista espectral permite comprender de manera sistemática el comportamiento del algoritmo de reconstrucción. En particular, como se mostrará en la sección siguiente, las propiedades cualitativas de la reconstrucción dependen de manera esencial de la forma de $A(\sigma)$ y, en particular, de su comportamiento asintótico y de la distribución de sus valores en el dominio de frecuencias.
+Desde un punto de vista funcional, el operador de reconstrucción puede interpretarse como un operador pseudo-diferencial cuyo símbolo está dado por $A(\sigma)$. En consecuencia, las propiedades analíticas del operador —tales como regularidad, estabilidad y capacidad de inversión— están directamente relacionadas con el comportamiento de la función de filtro.
+
+El análisis de estas funciones desde un punto de vista espectral permite comprender de manera sistemática el comportamiento del algoritmo de reconstrucción. En particular, como se mostrará en la sección siguiente, las propiedades cualitativas de la reconstrucción dependen de manera esencial de la forma de $A(\sigma)$, de su comportamiento asintótico y de la distribución de sus valores en el dominio de frecuencias.

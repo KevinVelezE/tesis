@@ -1,25 +1,25 @@
 \section{Discretización del problema tomográfico}
 
-En esta sección se describe la discretización del modelo continuo presentado en el capítulo anterior, con el fin de obtener un esquema computacional para la simulación de datos tomográficos y la implementación de algoritmos de reconstrucción.
+En esta sección se introduce una discretización del modelo continuo de la transformada de Radon, con el objetivo de obtener una formulación computacional adecuada para la simulación de datos tomográficos y la implementación de algoritmos de reconstrucción. Esta transición del modelo continuo al discreto es fundamental para el estudio numérico del problema inverso.
 
 \subsection*{Discretización del dominio espacial}
 
-Sea $f : \mathbb{R}^{2} \to \mathbb{R}$ una función con soporte compacto contenida en el cuadrado $[-1,1]^{2}$. Se considera una discretización uniforme de dicho dominio mediante una malla cartesiana de tamaño $N \times N$, dada por
+Sea $f : \mathbb{R}^{2} \to \mathbb{R}$ una función con soporte compacto contenido en el cuadrado $[-1,1]^{2}$. Se considera una discretización uniforme de este dominio mediante una malla cartesiana de tamaño $N \times N$, dada por
 \[
 x_i = -1 + \frac{2(i-1)}{N-1}, \quad y_j = -1 + \frac{2(j-1)}{N-1}, \quad 1 \leq i,j \leq N.
 \]
 
-La función $f$ se aproxima entonces por una matriz $f_{i,j} \approx f(x_i,y_j)$, lo que permite interpretar la imagen como un arreglo bidimensional de valores discretos. En los experimentos numéricos se utiliza típicamente $N=256$, lo que proporciona una resolución suficiente para observar efectos de reconstrucción.
+La función $f$ se aproxima entonces por una matriz $f_{i,j} \approx f(x_i,y_j)$, lo que permite interpretar la imagen como un arreglo bidimensional de valores discretos. En los experimentos numéricos se utiliza típicamente $N=256$, lo que proporciona una resolución suficiente para observar efectos relevantes en los procesos de reconstrucción.
 
-El objeto de estudio se modela mediante un \emph{phantom}, es decir, una función sintética que contiene estructuras de distintas intensidades y formas geométricas, lo que permite evaluar la capacidad de los algoritmos de reconstrucción para resolver detalles y contrastes.
+El objeto de estudio se modela mediante un \emph{phantom}, es decir, una función sintética que contiene estructuras de distintas intensidades y formas geométricas. Este tipo de modelos permite evaluar de manera controlada la capacidad de los algoritmos de reconstrucción para recuperar detalles y contrastes.
 
 \subsection*{Discretización de la transformada de Radon}
 
-En el modelo continuo, la transformada de Radon está definida como una integral de línea sobre rectas del plano. Para su aproximación numérica, se considera un conjunto finito de ángulos
+En el modelo continuo, la transformada de Radon está definida como una integral de línea sobre rectas del plano. Para su aproximación numérica, se considera un conjunto finito de ángulos equiespaciados
 \[
 \theta_k = k\,\Delta \theta, \quad k = 0,1,\dots,M-1,
 \]
-donde $\Delta \theta = \pi/M$. En la práctica, se trabaja con ángulos equiespaciados en el intervalo $[0,\pi)$.
+donde $\Delta \theta = \pi/M$.
 
 Para cada ángulo $\theta_k$, la proyección de la imagen se aproxima mediante una rotación de la imagen seguida de una suma discreta en una dirección fija. Más precisamente, si $f_{\theta_k}$ denota la imagen rotada un ángulo $\theta_k$, la proyección discreta se define como
 \[
@@ -27,22 +27,22 @@ g(r_i,\theta_k) \approx \sum_{j=1}^{N} f_{\theta_k}(x_i,y_j)\,\Delta r,
 \]
 donde $\Delta r$ es el paso de discretización en la variable espacial.
 
-Este procedimiento proporciona una aproximación numérica de la transformada de Radon
+Este procedimiento proporciona una aproximación discreta del operador continuo
 \[
 \mathcal{R}f(t,\theta),
 \]
-y da lugar a una matriz $g \in \mathbb{R}^{N \times M}$ que representa el \emph{sinograma} de la imagen.
+y da lugar a una matriz $g \in \mathbb{R}^{N \times M}$ que representa el conjunto de datos tomográficos.
 
 \subsection*{El sinograma}
 
-El sinograma $g(r,\theta)$ es la representación discreta del conjunto de proyecciones de la imagen. Cada columna de la matriz corresponde a una proyección en un ángulo fijo, mientras que cada fila representa la variación de la proyección respecto a la variable $r$.
+La matriz $g(r,\theta)$ obtenida anteriormente se denomina \emph{sinograma}. Cada columna corresponde a una proyección de la imagen en un ángulo fijo, mientras que cada fila describe la variación de la proyección en función de la variable $r$.
 
-Desde el punto de vista geométrico, el sinograma codifica la información de la imagen en el espacio de parámetros $(r,\theta)$, y constituye el dato de entrada del problema inverso de reconstrucción.
+Desde el punto de vista geométrico, el sinograma codifica la información de la imagen en el espacio de parámetros $(r,\theta)$, y constituye el dato de entrada del problema inverso de reconstrucción. La estructura del sinograma refleja propiedades geométricas del objeto, como la presencia de bordes o simetrías.
 
-En los experimentos numéricos, el sinograma se calcula a partir de la discretización descrita anteriormente, y puede ser perturbado mediante la adición de ruido para simular condiciones realistas de adquisición. En particular, se consideran modelos de ruido gaussiano y de tipo Poisson, este último motivado por la naturaleza del conteo de fotones en tomografía computarizada.
+En los experimentos numéricos, el sinograma puede ser perturbado mediante la adición de ruido para simular condiciones realistas de adquisición. En particular, se consideran modelos de ruido gaussiano y de tipo Poisson, este último motivado por la naturaleza estadística del conteo de fotones en tomografía computarizada.
 
 \subsection*{Observaciones}
 
-La discretización descrita anteriormente permite aproximar el operador continuo de Radon mediante un operador discreto que actúa sobre matrices. Este operador constituye la base de los algoritmos de reconstrucción considerados en esta tesis.
+La discretización descrita permite aproximar el operador continuo de Radon mediante un operador lineal discreto que actúa sobre matrices. En consecuencia, el problema inverso de reconstrucción puede formularse como un sistema lineal (posiblemente sobredeterminado o mal condicionado), cuya solución requiere técnicas numéricas específicas.
 
-Cabe señalar que la aproximación mediante rotaciones y sumas discretas introduce errores numéricos asociados a la interpolación y a la discretización del dominio. Sin embargo, este enfoque es estándar en la literatura y resulta adecuado para el estudio cualitativo de los métodos de reconstrucción y del comportamiento de los filtros en el dominio de Fourier \cite{kak_slaney1988,natterer2001}.
+Cabe señalar que la aproximación mediante rotaciones y sumas discretas introduce errores asociados tanto a la discretización del dominio como a los esquemas de interpolación empleados. No obstante, este enfoque es estándar en la literatura y resulta adecuado para el estudio cualitativo de los métodos de reconstrucción y del comportamiento espectral de los filtros utilizados \cite{kak_slaney1988,natterer2001}.

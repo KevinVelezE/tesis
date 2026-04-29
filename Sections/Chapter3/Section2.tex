@@ -1,48 +1,57 @@
 \section{Retroproyección y reconstrucción discreta}
 
-A partir de la discretización introducida en la sección anterior, es posible definir una versión discreta del operador de retroproyección y del método de reconstrucción asociado. Esta formulación constituye la base para la implementación numérica del método de retroproyección filtrada.
+A partir de la discretización introducida en la sección anterior, es posible definir versiones discretas del operador de retroproyección y de los métodos de reconstrucción asociados. Esta formulación constituye la base para la implementación numérica del método de retroproyección filtrada y permite establecer un puente entre el modelo continuo y su realización computacional.
 
 \subsection*{Retroproyección discreta}
 
-Sea $g(r,\theta)$ un sinograma discreto asociado a una imagen $f \in \mathbb{R}^{N \times N}$. La retroproyección discreta consiste en aproximar el operador continuo
+Sea $g(r,\theta)$ un sinograma discreto asociado a una imagen $f \in \mathbb{R}^{N \times N}$. La retroproyección discreta se define como una aproximación del operador continuo adjunto de la transformada de Radon
 \[
-\mathcal{R}^{*}g(x) = \int_{0}^{\pi} g(x \cdot \omega(\theta), \theta)\, d\theta
+\mathcal{R}^{*}g(x) = \int_{0}^{\pi} g(x \cdot \omega(\theta), \theta)\, d\theta,
 \]
-mediante una suma finita sobre un conjunto discreto de ángulos $\theta_k$:
+donde $\omega(\theta) = (\cos\theta, \sin\theta)$.
+
+En el contexto discreto, esta integral se aproxima mediante una suma finita sobre un conjunto de ángulos equiespaciados $\{\theta_k\}_{k=0}^{M-1}$:
 \[
-(\mathcal{R}^{*}_{d} g)(x_{i},y_{j}) \approx \sum_{k=0}^{M-1} g(x_{i} \cdot \omega(\theta_k), \theta_k)\, \Delta \theta.
+(\mathcal{R}^{*}_{d} g)(x_{i},y_{j}) \approx \sum_{k=0}^{M-1} g(r_{i,j,k}, \theta_k)\, \Delta \theta,
+\]
+donde
+\[
+r_{i,j,k} = x_i \cos\theta_k + y_j \sin\theta_k.
 \]
 
-En esta expresión, los valores $g(x_{i} \cdot \omega(\theta_k), \theta_k)$ no coinciden, en general, con los nodos de la discretización en la variable $r$. Por esta razón, es necesario emplear procedimientos de interpolación para evaluar el sinograma en puntos intermedios.
+Dado que los valores $r_{i,j,k}$ no coinciden en general con los nodos de discretización en la variable $r$, es necesario emplear esquemas de interpolación para evaluar el sinograma en dichos puntos. Este paso introduce errores numéricos que afectan la precisión de la reconstrucción.
 
-La retroproyección discreta así definida produce una aproximación de la imagen original, aunque en general aparece suavizada debido a la naturaleza integral del operador.
+Es importante señalar que el operador $\mathcal{R}^{*}$ corresponde al adjunto de la transformada de Radon, y no a su inverso. Por tanto, la retroproyección por sí sola no permite recuperar la imagen original.
+
 
 \subsection*{Reconstrucción mediante retroproyección no filtrada}
 
-Como paso preliminar, es posible considerar la reconstrucción obtenida aplicando directamente la retroproyección al sinograma, es decir,
+Una primera aproximación de la imagen puede obtenerse aplicando directamente la retroproyección discreta al sinograma:
 \[
 f_{\mathrm{BP}} = \mathcal{R}^{*}_{d} g.
 \]
 
-Esta reconstrucción, conocida como \emph{retroproyección no filtrada}, presenta típicamente un efecto de difuminado, ya que no compensa la pérdida de información en altas frecuencias introducida por la transformada de Radon. Este fenómeno ya fue anticipado en el análisis continuo del capítulo anterior.
+Esta reconstrucción, conocida como \emph{retroproyección no filtrada}, presenta un efecto de difuminado característico. Desde el punto de vista analítico, este fenómeno puede explicarse a través del operador compuesto $\mathcal{R}^{*}\mathcal{R}$, el cual no es la identidad, sino un operador integral que actúa como un suavizado de la imagen original.
+
+En el dominio de Fourier, este comportamiento se traduce en una atenuación de las componentes de alta frecuencia, lo que produce pérdida de resolución y la aparición de artefactos en la reconstrucción. Este hecho pone de manifiesto que la retroproyección debe ser corregida mediante un proceso de filtrado adecuado.
+
 
 \subsection*{Incorporación del filtrado}
 
-Para obtener una reconstrucción más precisa, es necesario introducir un paso de filtrado previo a la retroproyección. En el contexto discreto, este proceso se implementa mediante el uso de la transformada discreta de Fourier en la variable $r$.
+Para compensar la pérdida de información introducida por el operador $\mathcal{R}^{*}\mathcal{R}$, se introduce un paso de filtrado en el dominio de Fourier. En el contexto discreto, este proceso se implementa aplicando la transformada discreta de Fourier en la variable $r$ para cada ángulo $\theta_k$.
 
-Para cada ángulo $\theta_k$, se considera la transformada de Fourier discreta de la proyección
-\[
-\widehat{g}(\sigma,\theta_k),
-\]
-que en la práctica se calcula mediante algoritmos rápidos de Fourier (FFT). A continuación, se multiplica por una función de filtro $A(\sigma)$ definida en el dominio de frecuencias, obteniendo
+Denotando por $\widehat{g}(\sigma,\theta_k)$ la transformada de Fourier de la proyección $g(r,\theta_k)$, se define la proyección filtrada mediante la multiplicación por una función de filtro $A(\sigma)$:
 \[
 \widehat{g}_{A}(\sigma,\theta_k) = A(\sigma)\,\widehat{g}(\sigma,\theta_k).
 \]
 
-Finalmente, se aplica la transformada inversa de Fourier para obtener la proyección filtrada en el dominio espacial:
+Posteriormente, se aplica la transformada inversa de Fourier para obtener
 \[
 g_{A}(r,\theta_k).
 \]
+
+Desde un punto de vista teórico, la elección del filtro $A(\sigma)$ está relacionada con la inversión del operador $\mathcal{R}^{*}\mathcal{R}$, el cual puede interpretarse como un multiplicador en el dominio de Fourier. En particular, el filtro ideal presenta un crecimiento proporcional a $|\sigma|$, lo que explica su papel en la recuperación de las altas frecuencias.
+
 
 \subsection*{Método de retroproyección filtrada}
 
@@ -51,16 +60,17 @@ Una vez obtenidas las proyecciones filtradas, la reconstrucción se realiza medi
 f_{A} = \mathcal{R}^{*}_{d} g_{A}.
 \]
 
-Este procedimiento constituye la versión discreta del método de retroproyección filtrada, que puede interpretarse como una aproximación del operador continuo
+Este procedimiento constituye la versión discreta del método de retroproyección filtrada (FBP), que puede interpretarse como una aproximación del operador continuo
 \[
 f = \mathcal{R}^{*} \bigl( \mathcal{F}_{A} \mathcal{R}f \bigr),
 \]
 donde $\mathcal{F}_{A}$ es un operador multiplicador en el dominio de Fourier.
 
-Dependiendo de la normalización adoptada en la transformada discreta de Fourier, pueden aparecer factores constantes en la implementación del método. Estos no afectan el comportamiento cualitativo de la reconstrucción y se omiten en la formulación presentada.
+Dependiendo de la normalización adoptada en la transformada discreta de Fourier, pueden aparecer factores constantes en la implementación del método. Estos no afectan el comportamiento cualitativo de la reconstrucción.
+
 
 \subsection*{Observaciones}
 
-El esquema descrito permite implementar de manera eficiente el método de retroproyección filtrada en un entorno discreto. Sin embargo, su desempeño depende de varios factores, entre los que destacan la resolución de la malla, la discretización angular y la elección de la función de filtro $A(\sigma)$.
+El esquema descrito permite implementar de manera eficiente el método de retroproyección filtrada en un entorno discreto. No obstante, su desempeño depende de varios factores, entre los que destacan la resolución espacial, la discretización angular y la elección de la función de filtro $A(\sigma)$.
 
-En particular, el análisis del efecto de distintas funciones de filtro sobre la calidad de la reconstrucción constituye el objetivo principal de las secciones siguientes, donde se estudiará la relación entre sus propiedades espectrales y el comportamiento del algoritmo.
+En particular, la elección del filtro determina el equilibrio entre resolución y estabilidad frente al ruido. Este aspecto constituye el eje central del análisis desarrollado en las secciones siguientes, donde se estudiará el comportamiento de distintas familias de filtros desde un punto de vista espectral.
