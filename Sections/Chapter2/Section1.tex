@@ -18,6 +18,15 @@ Por tanto,
 \]
 Así, después de normalizar la intensidad y tomar logaritmos, el dato medido es una integral de línea del coeficiente de atenuación. Esta idealización y su conexión con el modelo tomográfico se presentan, por ejemplo, en Kuchment \cite[Sec.~5.3.1, pp.~23--25]{kuchment2014}.
 
+La Figura~\ref{fig:beer-lambert} resume esta etapa física: el detector no mide directamente $f$, sino una intensidad atenuada cuya normalización logarítmica produce una integral sobre la trayectoria del haz.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.86\textwidth}{!}{\input{Figures/Chapter2/beer_lambert}}
+\caption{Adquisición tomográfica ideal y ley de Beer--Lambert. Elaboración propia.}
+\label{fig:beer-lambert}
+\end{figure}
+
 En geometría paralela, las trayectorias se modelan por rectas. Para cada $\theta\in[0,\pi)$ se fija
 \[
 \omega(\theta)=(\cos\theta,\sin\theta),
@@ -36,6 +45,15 @@ x=t\omega(\theta)+s\omega^\perp(\theta),
 \qquad s\in\mathbb R.
 \]
 El parámetro $t$ es la distancia firmada de la recta al origen. Esta será la parametrización normal usada en todo el capítulo; formulaciones equivalentes pueden encontrarse en Kuchment \cite[Sec.~5.3.4, pp.~27--28]{kuchment2014}.
+
+La Figura~\ref{fig:radon-geometria} muestra la convención geométrica usada en esta tesis: $\omega(\theta)$ es la normal de la recta y $\omega^\perp(\theta)$ es la dirección de integración.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.72\textwidth}{!}{\input{Figures/Chapter2/radon_geometry}}
+\caption{Parametrización normal de las rectas en la transformada de Radon. Elaboración propia.}
+\label{fig:radon-geometria}
+\end{figure}
 
 Para cada ángulo $\theta$, la función de $t$ que contiene las integrales de línea se denomina proyección. Al reunir las proyecciones para distintos valores de $\theta$ se obtiene el sinograma, es decir, la representación de los datos tomográficos en el plano de parámetros $(t,\theta)$ \cite[Sec.~5.3.5, p.~28]{kuchment2014}.
 

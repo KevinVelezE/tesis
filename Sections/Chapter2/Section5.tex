@@ -45,18 +45,15 @@ f=\mathcal R^*T_{\tau_{\mathrm{rampa}}}\mathcal Rf,
 \tau_{\mathrm{rampa}}(\sigma)=|\sigma|.
 \]
 
-Escribiendo $g=\mathcal Rf$, desde el punto de vista computacional
-el método tiene la estructura
-\[
-\begin{aligned}
-\text{proyecciones}
-&\xrightarrow{\mathcal F_t}\widehat g
-\xrightarrow{\times |\sigma|}\widehat g_{\mathrm{filt}},\\
-\widehat g_{\mathrm{filt}}
-&\xrightarrow{\mathcal F_t^{-1}}g_{\mathrm{filt}}
-\xrightarrow{\mathcal R^*}f.
-\end{aligned}
-\]
 El factor $|\sigma|$ incorpora el jacobiano radial del cambio de variables, pero su crecimiento sin cota amplifica componentes de alta frecuencia. Esta observación conecta con la discusión de multiplicadores no acotados del capítulo anterior y motiva el estudio posterior de filtros modificados con símbolos $\tau(\sigma)$.
+
+Escribiendo $g=\mathcal Rf$, la Figura~\ref{fig:fbp-flujo} presenta el procedimiento como una cadena de operaciones. Para un símbolo general $\tau$, la salida se denota $f_\tau$; para la rampa canónica $\tau(\sigma)=|\sigma|$, en el modelo continuo ideal se recupera $f$. En el capítulo computacional, la multiplicación por el símbolo se representará mediante el vector $M_\tau$, o la matriz diagonal asociada, aplicado a cada proyección en frecuencia.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{0.92\textwidth}{!}{\input{Figures/Chapter2/fbp_pipeline}}
+\caption{Flujo de la retroproyección filtrada en geometría paralela. Elaboración propia.}
+\label{fig:fbp-flujo}
+\end{figure}
 
 La retroproyección filtrada es el algoritmo analítico clásico para datos de proyección paralela. Una presentación computacional se encuentra en Natterer \cite[Sec.~V.1, p.~102 y ss.]{natterer2001}; Kak y Slaney discuten la reconstrucción desde proyecciones paralelas en \cite[Sec.~3.3]{kak_slaney1988}. En esta tesis, la rampa se mantendrá como referencia teórica y computacional, mientras que las comparaciones numéricas posteriores reemplazarán $|\sigma|$ por otros símbolos $\tau(\sigma)$.

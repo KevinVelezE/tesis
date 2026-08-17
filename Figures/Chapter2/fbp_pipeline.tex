@@ -1,0 +1,27 @@
+\shorthandoff{<>}
+\begin{tikzpicture}[node distance=1.35cm, font=\small]
+    \tikzstyle{block}=[draw=black, fill=gray!10, rounded corners=2pt, minimum width=2.25cm, minimum height=0.78cm, align=center]
+    \tikzstyle{data}=[align=center, minimum width=2.1cm]
+    \node[data] (sino) {sinograma\\$g=\mathcal Rf$};
+    \node[block, right=of sino] (fft) {Fourier en $t$\\$\mathcal F_t$};
+    \node[data, right=of fft] (ghat) {$\widehat g(\sigma,\theta)$};
+    \node[block, below=of ghat] (mult) {multiplicación por $\tau(\sigma)$\\(discreto: $M_\tau$)};
+    \node[data, left=of mult] (gfhat) {$\widehat g_{\mathrm{filt}}$};
+    \node[block, left=of gfhat] (ifft) {Fourier inversa\\$\mathcal F_t^{-1}$};
+    \node[data, left=of ifft] (gf) {$g_{\mathrm{filt}}$};
+    \node[block, below=of gf] (bp) {retroproyección\\$\mathcal R^*$};
+    \node[data, right=of bp] (rec) {reconstrucción\\$f_\tau$};
+
+    \draw[->, thick] (sino) -- (fft);
+    \draw[->, thick] (fft) -- (ghat);
+    \draw[->, thick] (ghat) -- (mult);
+    \draw[->, thick] (mult) -- (gfhat);
+    \draw[->, thick] (gfhat) -- (ifft);
+    \draw[->, thick] (ifft) -- (gf);
+    \draw[->, thick] (gf) -- (bp);
+    \draw[->, thick] (bp) -- (rec);
+
+    \node[align=center, below=0.45cm of mult]
+    {rampa canónica continua: $\tau(\sigma)=|\sigma|$};
+\end{tikzpicture}
+\shorthandon{<>}

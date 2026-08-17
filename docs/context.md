@@ -10,6 +10,8 @@ Capitulo 2 definitivo: Transformada de Radon y retroproyeccion filtrada.
 
 Etapa 2: titulo, introduccion y capitulo 2 actualizados conforme a las convenciones canonicas.
 
+Etapa 2.5: figuras pedagogicas vectoriales para Beer-Lambert, geometria de Radon, sinograma y flujo FBP; deben respetar omega como normal, omega_perp como direccion de integracion y rampa |sigma| sin factor 1/2.
+
 Pendiente global: pdfinfo emite `Syntax Warning: Annotation destination array is too short`; no corregido en Etapa 2.
 
 La regularizacion de Tikhonov queda eliminada como linea matematica y computacional de la tesis. No debe desarrollarse una seccion formal, experimentos ni preliminares orientados a Tikhonov.
@@ -85,7 +87,9 @@ El filtro rampa teorico es:
 tau_rampa(sigma) = |sigma|
 ```
 
-El factor 0.5 presente en codigo previo no queda aprobado como canonico y debe auditarse antes de incorporarse a la tesis.
+El factor 0.5 presente en codigo previo no es parte de la rampa canonica y no debe incorporarse dentro de tau.
+
+Decision Etapa 3A: la rampa canonica es tau_rampa(sigma) = |sigma|; eliminar scale=0.5 del simbolo. Si aparece una correccion global discreta, debe ser una constante separada, derivada y documentada, nunca oculta dentro de tau.
 
 ---
 
@@ -101,6 +105,8 @@ f_tau = R* g_tau
 ```
 
 En la discretizacion se usara M_tau para la matriz diagonal o vector de entradas que representa la multiplicacion por tau en frecuencia.
+
+Decision Etapa 3A: la rampa sera referencia y A-F seran seis filtros adicionales, para siete simbolos en las comparaciones. Todos los filtros se evaluaran sobre la misma realizacion de ruido. RMSE y error relativo se calcularan sobre una region de evaluacion declarada. El caso B con tau_B(0)=0.3 debe discutirse.
 
 El flujo computacional que debe mantenerse consistente es:
 

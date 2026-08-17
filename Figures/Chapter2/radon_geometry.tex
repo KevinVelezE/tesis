@@ -1,0 +1,27 @@
+\shorthandoff{<>}
+\begin{tikzpicture}[font=\small]
+    \coordinate (O) at (0,0);
+    \def\ang{38}
+    \def\dist{1.05}
+    \coordinate (P) at (\ang:\dist);
+
+    \draw[->, thin, gray] (-2.2,0) -- (2.3,0) node[right] {$x_1$};
+    \draw[->, thin, gray] (0,-1.75) -- (0,1.9) node[above] {$x_2$};
+
+    \draw[->, thick] (O) -- (\ang:1.65) node[above right] {$\omega(\theta)$};
+    \draw[->, thin] (0.45,0) arc (0:\ang:0.45);
+    \node at (0.62,0.22) {$\theta$};
+
+    \draw[thick, black] (P) ++(\ang+90:1.45) -- ++(\ang-90:2.90) node[pos=0.86, below right] {$L(t,\theta)$};
+
+    \draw[->, thick] (P) -- ++(\ang+90:0.95);
+    \node[anchor=south east, fill=white, inner sep=1pt] at ($(P)+(\ang+90:0.78)+(-0.18,0.08)$) {$\omega^\perp(\theta)$};
+    \draw[thick] (O) -- (P) node[midway, above left] {$t$};
+    \fill (O) circle (1.2pt) node[below left] {$0$};
+    \fill (P) circle (1.2pt);
+
+    \draw[thin] (P) ++(\ang+90:0.18) -- ++(\ang+180:0.18) -- ++(\ang-90:0.18);
+    \node[align=center] at (0,-1.45)
+    {$x=t\omega(\theta)+s\omega^\perp(\theta)$,\quad $\theta\in[0,\pi)$};
+\end{tikzpicture}
+\shorthandon{<>}
