@@ -4,6 +4,14 @@
 
 La tesis estudia la reconstruccion tomografica bidimensional mediante la transformada de Radon y el metodo de retroproyeccion filtrada (FBP).
 
+Titulo definitivo: Retroproyeccion filtrada en reconstruccion tomografica: un estudio teorico y computacional.
+
+Capitulo 2 definitivo: Transformada de Radon y retroproyeccion filtrada.
+
+Etapa 2: titulo, introduccion y capitulo 2 actualizados conforme a las convenciones canonicas.
+
+Pendiente global: pdfinfo emite `Syntax Warning: Annotation destination array is too short`; no corregido en Etapa 2.
+
 La regularizacion de Tikhonov queda eliminada como linea matematica y computacional de la tesis. No debe desarrollarse una seccion formal, experimentos ni preliminares orientados a Tikhonov.
 
 ---

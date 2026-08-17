@@ -1,6 +1,13 @@
-\chapter{La transformada de Radon y la tomografía computarizada}
+\chapter{Transformada de Radon y retroproyección filtrada}
 
-En este capítulo se presenta el modelo matemático de la tomografía computarizada bidimensional y se introduce la transformada de Radon como operador lineal entre espacios de Hilbert. Asimismo, se describe la noción de sinograma, se enuncia el teorema de corte de Fourier y se discute la fórmula de inversión continua que da lugar al método de retroproyección filtrada. Las referencias principales son \cite{radon1917,kak_slaney1988,natterer2001,kuchment2014}.
+En este capítulo se desarrolla el modelo continuo de adquisición tomográfica en geometría paralela y se deriva la fórmula de retroproyección filtrada. Las identidades analíticas se formulan inicialmente para funciones de Schwartz, con las convenciones de Fourier fijadas en el capítulo anterior. El objetivo es obtener, a partir del teorema de corte de Fourier y del cambio a coordenadas polares con radio firmado, la fórmula
+\[
+f=
+\mathcal R^*\mathcal F_t^{-1}
+\left[
+|\sigma|\,\mathcal F_t(\mathcal Rf)
+\right].
+\]
 
 \input{Sections/Chapter2/Section1}
 \input{Sections/Chapter2/Section2}

@@ -1,46 +1,61 @@
-\section{La transformada de Radon}
+\section{Transformada de Radon y retroproyección}
 
-La formulación matemática del modelo descrito en la sección anterior conduce de manera natural a la introducción de la transformada de Radon como operador que asocia a una función sus integrales a lo largo de rectas en el plano.
-
-Sea $f \in L^{2}(\mathbb{R}^{2})$ una función con soporte compacto. Para cada $\theta \in [0,\pi)$ y $t \in \mathbb{R}$, se define la \emph{transformada de Radon} de $f$ por
+Sea $f\in\mathcal S(\mathbb R^2)$. Para $t\in\mathbb R$ y $\theta\in[0,\pi)$, la transformada de Radon de $f$ se define por
 \[
-\mathcal{R}f(t,\theta) = \int_{L(t,\theta)} f(x)\, ds,
+(\mathcal Rf)(t,\theta)
+=
+\int_{\mathbb R}
+f\bigl(t\omega(\theta)+s\omega^\perp(\theta)\bigr)\,ds.
 \]
-donde $L(t,\theta) = \{ x \in \mathbb{R}^{2} : x \cdot \omega(\theta) = t \}$ es la recta parametrizada en la sección anterior y $ds$ denota el elemento de longitud sobre dicha recta.
+Esta definición coincide con la integral de $f$ sobre la recta $L(t,\theta)$. La transformada de Radon sobre funciones de Schwartz se presenta en Natterer \cite[Sec.~II.1, pp.~9--10]{natterer2001}. Allí pueden aparecer convenciones de parametrización y normalización distintas.
 
-De este modo, la función $\mathcal{R}f : \mathbb{R} \times [0,\pi) \to \mathbb{R}$ describe la colección de todas las integrales de línea de $f$ y coincide con las mediciones ideales del sistema tomográfico introducidas previamente, es decir,
+La linealidad se sigue directamente de la linealidad de la integral: para $f_1,f_2\in\mathcal S(\mathbb R^2)$ y escalares $a,b$,
 \[
-\mathcal{R}f(t,\theta) = p(t,\theta).
-\]
-En este sentido, la transformada de Radon proporciona un modelo matemático continuo del proceso de adquisición de datos en tomografía computarizada \cite{kak_slaney1988,natterer2001,kuchment2014}.
-
-\subsection*{Propiedades básicas}
-
-La transformada de Radon es un operador lineal, en el sentido de que para cualesquiera $f,g \in L^{2}(\mathbb{R}^{2})$ y $\alpha,\beta \in \mathbb{R}$ se cumple
-\[
-\mathcal{R}(\alpha f + \beta g) = \alpha \mathcal{R}f + \beta \mathcal{R}g.
+\mathcal R(af_1+bf_2)=a\mathcal Rf_1+b\mathcal Rf_2.
 \]
 
-Además, bajo hipótesis adecuadas sobre $f$, la aplicación $f \mapsto \mathcal{R}f$ es continua entre espacios funcionales apropiados. En particular, si $f$ es suficientemente regular y de soporte compacto, entonces $\mathcal{R}f$ es una función continua en las variables $(t,\theta)$ \cite{helgason2011,kuchment2014}.
-
-Desde el punto de vista geométrico, la transformada de Radon puede interpretarse como un operador que proyecta la función $f$ sobre el conjunto de todas las rectas del plano, asignando a cada recta el valor de la integral de $f$ sobre dicha recta.
-
-\subsection*{Interpretación como operador integral}
-
-La transformada de Radon puede escribirse también en términos de distribuciones utilizando la función delta de Dirac. Formalmente, se tiene
+Para identificar la retroproyección como adjunto formal, tomamos además $g\in C_c^\infty(\mathbb R\times(0,\pi))$ y definimos las parejas
 \[
-\mathcal{R}f(t,\theta) = \int_{\mathbb{R}^{2}} f(x)\,\delta(x \cdot \omega(\theta) - t)\, dx,
+\begin{aligned}
+\langle u,v\rangle_{\mathrm{datos}}
+&=
+\int_0^\pi\int_{\mathbb R}
+u(t,\theta)\overline{v(t,\theta)}\,dt\,d\theta,\\
+\langle f,h\rangle_{\mathrm{imagen}}
+&=
+\int_{\mathbb R^2}f(x)\overline{h(x)}\,dx.
+\end{aligned}
 \]
-lo que pone de manifiesto que $\mathcal{R}$ es un operador integral cuyo núcleo está dado por la distribución $\delta(x \cdot \omega(\theta) - t)$ \cite{natterer2001,kuchment2014}.
-
-Esta formulación resulta particularmente útil para el análisis teórico de la transformada y su relación con la transformada de Fourier.
-
-\subsection*{Observación sobre el dominio de definición}
-
-En el contexto de esta tesis, se considerará la transformada de Radon como un operador definido inicialmente sobre funciones suaves y de soporte compacto, y posteriormente extendido por densidad a espacios funcionales como $L^{2}(\mathbb{R}^{2})$. Este enfoque es estándar en la literatura y permite evitar dificultades técnicas sin perder generalidad en el análisis \cite{helgason2011}.
-
-\subsection*{Observaciones}
-
-La transformada de Radon constituye el operador fundamental del problema inverso en tomografía computarizada. El objetivo de reconstruir la función $f$ a partir de sus proyecciones $\mathcal{R}f$ se traduce en la necesidad de invertir este operador.
-
-En el modelo continuo, dicha inversión puede realizarse mediante herramientas del análisis de Fourier, lo que da lugar a fórmulas explícitas que serán estudiadas en las secciones siguientes. En particular, el teorema de corte de Fourier proporciona el vínculo esencial entre la transformada de Radon y la transformada de Fourier, y constituye la base del método de retroproyección filtrada.
+Entonces, usando el cambio de variables
+\[
+x=t\omega(\theta)+s\omega^\perp(\theta),
+\qquad dx=dt\,ds
+\]
+para cada $\theta$, se obtiene
+\[
+\begin{aligned}
+\langle\mathcal Rf,g\rangle_{\mathrm{datos}}
+&=
+\int_0^\pi\int_{\mathbb R}
+(\mathcal Rf)(t,\theta)
+\overline{g(t,\theta)}\,dt\,d\theta \\
+&=
+\int_{\mathbb R^2}
+f(x)
+\overline{
+\left(
+\int_0^\pi
+g(x\cdot\omega(\theta),\theta)\,d\theta
+\right)}\,dx \\
+&=
+\langle f,\mathcal R^*g\rangle_{\mathrm{imagen}}.
+\end{aligned}
+\]
+Por tanto, el adjunto formal de $\mathcal R$ con respecto a las medidas $dt\,d\theta$ y $dx$ es
+\[
+(\mathcal R^*g)(x)
+=
+\int_0^\pi
+g(x\cdot\omega(\theta),\theta)\,d\theta.
+\]
+Esta es la operación de retroproyección. La misma fórmula se empleará siempre que la integral angular esté bien definida. En esta tesis se usa la notación $\mathcal R^*$ para este adjunto formal; no se está afirmando aquí que ya se haya construido un operador acotado entre espacios $L^2$ completos. Para resultados de dualidad y retroproyección en un marco funcional más amplio puede consultarse Natterer \cite[Sec.~II.1, Thm.~1.3, pp.~13--15]{natterer2001}. Kuchment también desarrolla la retroproyección, aunque usa la notación $\mathcal R^\#$ y convenciones con integración angular diferentes \cite[Sec.~5.6, pp.~34--36]{kuchment2014}.
