@@ -15,4 +15,5 @@
 main.pdf
 
 # docs
-docs/
+docs/*
+!docs/context.md
