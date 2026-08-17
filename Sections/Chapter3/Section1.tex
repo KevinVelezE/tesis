@@ -43,7 +43,7 @@ donde $\Delta t$ coincide con el paso espacial de la malla. Esta elección refle
 
 \subsection*{Generación del sinograma}
 
-El sinograma se genera con la rutina \texttt{radon} de \texttt{scikit-image} \cite{vanderwalt2014scikitimage}, usando geometría circular. En términos del código reproducible, esto corresponde a la opción \texttt{circle=True}. Esta decisión conserva $N_t=N=256$ muestras de detector.
+El sinograma se genera con la rutina \texttt{radon} de \texttt{scikit-image} \cite{vanderwalt2014scikitimage}, usando la opción \texttt{circle=True}. Esta opción supone que la imagen es nula fuera del círculo inscrito en la malla y permite conservar $N_t=N=256$ muestras de detector. No describe una geometría de adquisición circular: la adquisición sigue correspondiendo a una geometría de haz paralelo.
 
 La definición geométrica continua no se modifica: la recta asociada a $(t,\theta)$ sigue dada por $x\cdot\omega(\theta)=t$, con $\omega(\theta)=(\cos\theta,\sin\theta)$. La implementación debe, sin embargo, distinguir esta convención matemática de la orientación vertical de las matrices digitales, cuyas filas crecen en sentido opuesto al eje cartesiano usual. Esta diferencia se corrige al retroproyectar, sin cambiar la definición de la transformada de Radon.
 
@@ -52,7 +52,7 @@ La Figura~\ref{fig:chapter3-phantom-sinogram} muestra el fantoma y el sinograma 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.92\textwidth]{Figures/Chapter3/phantom_and_sinogram.pdf}
-    \caption{Fantoma geométrico utilizado en los experimentos y sinograma generado con $M=90$ ángulos en geometría circular. El fantoma está contenido en el disco de radio $R=0.9$, y el sinograma constituye el dato de entrada para las reconstrucciones posteriores.}
+    \caption{Fantoma geométrico utilizado en los experimentos y sinograma generado con $M=90$ ángulos de haz paralelo. El fantoma está contenido en el disco de radio $R=0.9$, y el sinograma constituye el dato de entrada para las reconstrucciones posteriores.}
     \label{fig:chapter3-phantom-sinogram}
 \end{figure}
 

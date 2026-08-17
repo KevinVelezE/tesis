@@ -173,3 +173,25 @@ Restricciones bibliograficas vigentes:
 - barrett_myers2013 queda sin citar mientras no se fije inequívocamente la edicion usada.
 - No citar Davison, Stein-Wainger ni Shepp-Logan salvo que se agregue contenido explicito que lo requiera.
 - Quinto y Frikel-Quinto quedan reservados para conclusiones futuras solo si se propone angulo limitado o datos incompletos.
+
+---
+
+## Etapa 4B cierre editorial
+
+Etapa 4B incorpora resumen real, conclusiones, bibliografia en espanol y encabezado abreviado del capitulo 3 sin cambiar formulas, codigo, figuras, tablas, metricas ni resultados.
+
+Decisiones editoriales:
+
+- No se agrega abstract en ingles ni palabras clave.
+- Las conclusiones se incluyen antes de la bibliografia.
+- La bibliografia debe mostrarse como Bibliografia mediante titulo explicito de biblatex.
+- El titulo visible y el indice del capitulo 3 conservan el nombre completo; solo la marca de encabezado se abrevia como Implementacion numerica y analisis de FBP.
+- Quinto1993 y frikel_quinto2013 se citan solo en trabajo futuro por datos incompletos y angulo limitado.
+
+Interpretacion de cierre que debe preservarse:
+
+- La rampa canonica es tau_rampa(sigma)=|sigma|, sin factores adicionales.
+- D y E quedan practicamente empatados sin ruido.
+- C obtiene el menor error con ruido solo bajo la configuracion y realizacion ruidosa estudiadas.
+- No se afirma superioridad universal de ningun filtro.
+- Las limitaciones son fantoma sintetico, geometria paralela bidimensional, una realizacion de ruido, filtros exploratorios y ausencia de datos clinicos o tridimensionales.
