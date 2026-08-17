@@ -1,0 +1,49 @@
+{
+  "circle": true,
+  "delta_sigma": 0.12451171875000044,
+  "delta_t": 0.007843137254901933,
+  "delta_theta": 0.03490658503988659,
+  "metric_hash": "583f3411f5f288ee345cadac8d93752bd0785135f429781408ea12363819fca4",
+  "n_fft": 1024,
+  "n_t": 256,
+  "orientation_check": {
+    "phantom_center": [
+      -0.04380054738789595,
+      0.08365987072660294
+    ],
+    "ramp_reconstruction_center": [
+      -0.05738571397417601,
+      0.08912004865182709
+    ]
+  },
+  "parameters": {
+    "circle": true,
+    "cmap": "bone",
+    "dpi_png": 300,
+    "figure_dir": "Figures/Chapter3",
+    "m": 90,
+    "n": 256,
+    "noise_level": 0.05,
+    "radius": 0.9,
+    "result_dir": "Results/Chapter3",
+    "seed": 42,
+    "table_dir": "Tables/Chapter3",
+    "theta_step_degrees": 2
+  },
+  "sigma_noise": 0.17043733475055423,
+  "versions": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "scikit-image": "0.26.0",
+    "scipy": "1.18.0"
+  },
+  "zero_frequency_values": {
+    "A": 0.0,
+    "B": 0.3,
+    "C": 0.0,
+    "D": 0.0,
+    "E": 0.0,
+    "F": 0.0,
+    "ramp": 0.0
+  }
+}
