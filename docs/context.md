@@ -153,3 +153,23 @@ El filtrado discreto debe explicarse con zero-padding centrado P, recorte C, DFT
 La tabla de metricas de Chapter3 incluye RMSE, error relativo L2 y razon de medias. RMSE y error relativo son metricas principales; la razon de medias es solo diagnostico de amplitud y no factor de escala.
 
 Se agrega referencia formal a scikit-image solamente para justificar el uso de skimage.transform.radon en la generacion del sinograma.
+
+---
+
+## Etapa 4A bibliografica
+
+Etapa 4A incorpora fortalecimiento bibliografico sin cambiar formulas, estructura, codigo, figuras, tablas, metricas ni resultados.
+
+Fuentes nuevas citables agregadas:
+
+- helgason1999 para geometria integral, transformada de Radon, teorema de corte e inversion.
+- beckmann_iske2017 para estimaciones de error en FBP.
+- beckmann_nickel2025 para diseno contemporaneo de funciones filtro optimizadas en FBP.
+
+Restricciones bibliograficas vigentes:
+
+- Los filtros A-F de la tesis son exploratorios y no reproducen los filtros optimizados de Beckmann-Nickel.
+- Beylkin se cita solo para distinguir formulaciones formales de transformada de Radon discreta; el codigo no implementa exactamente esa transformada.
+- barrett_myers2013 queda sin citar mientras no se fije inequívocamente la edicion usada.
+- No citar Davison, Stein-Wainger ni Shepp-Logan salvo que se agregue contenido explicito que lo requiera.
+- Quinto y Frikel-Quinto quedan reservados para conclusiones futuras solo si se propone angulo limitado o datos incompletos.
