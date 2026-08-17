@@ -1,78 +1,74 @@
-\section{Funciones de filtro y multiplicadores de Fourier}
+\section{Símbolos discretos y filtros A--F}
 
-Como se mostró en la sección anterior, el método de retroproyección filtrada puede interpretarse como una aproximación del operador inverso de la transformada de Radon. Desde un punto de vista analítico, este proceso está gobernado por el operador compuesto $\mathcal{R}^{*}\mathcal{R}$, el cual actúa como un operador de suavizado.
+El algoritmo anterior queda determinado por el símbolo $\tau$ usado para construir el multiplicador discreto $M_\tau$. En esta sección se describen los siete símbolos evaluados: la rampa como referencia y seis filtros exploratorios, denotados A--F.
 
-En el dominio de Fourier, este operador puede describirse mediante un multiplicador, lo que permite interpretar el problema de reconstrucción como la inversión de un operador pseudo-diferencial. En particular, la fórmula de inversión continua sugiere que el operador inverso está asociado a un multiplicador proporcional a $|\sigma|$.
+\subsection*{Rampa de referencia}
 
-En este contexto, el método de retroproyección filtrada introduce una función de filtro $A(\sigma)$ que actúa como símbolo del operador de reconstrucción. Esta formulación permite estudiar de manera sistemática el efecto de distintas elecciones de $A(\sigma)$ sobre el comportamiento del algoritmo, en particular en términos de resolución y estabilidad.
-
-\subsection*{Filtro rampa}
-
-El filtro ideal asociado a la fórmula de inversión continua está dado por
+El símbolo de referencia es la rampa canónica
 \[
-A(\sigma) = |\sigma|.
+\tau_{\mathrm{rampa}}(\sigma)=|\sigma|.
 \]
-Este filtro, conocido como \emph{filtro rampa}, amplifica las componentes de alta frecuencia de las proyecciones, compensando la pérdida de información introducida por la transformada de Radon.
+Esta elección corresponde directamente a la fórmula continua de FBP fijada en el Capítulo 2. En la implementación discreta no se introduce ningún factor adicional en este símbolo.
 
-Desde el punto de vista teórico, este crecimiento lineal es el necesario para invertir el efecto de suavizado del operador $\mathcal{R}^{*}\mathcal{R}$. Sin embargo, en un contexto discreto y en presencia de ruido, el uso directo del filtro rampa puede resultar inestable, ya que la amplificación de altas frecuencias incrementa significativamente el efecto del ruido.
+\subsection*{Filtros exploratorios A, B y C}
 
-\subsection*{Generalización mediante funciones de filtro}
-
-Con el fin de controlar el comportamiento del algoritmo, se considera una familia más general de filtros definidos por funciones
+El filtro A modifica la rampa mediante una perturbación oscilatoria dependiente de la frecuencia:
 \[
-A : \mathbb{R} \to \mathbb{R}, \quad \sigma \mapsto A(\sigma),
+\tau_A(\sigma)
+=
+|\sigma|\left(1+\frac{\sin|\sigma|}{1+|\sigma|}\right).
 \]
-que actúan como multiplicadores en el dominio de Fourier:
+El filtro B tiene respuesta no nula en frecuencia cero:
 \[
-\widehat{g}_{A}(\sigma,\theta) = A(\sigma)\,\widehat{g}(\sigma,\theta).
+\tau_B(\sigma)=\sqrt{0.3^2+|\sigma|^2}.
+\]
+En particular, $\tau_B(0)=0.3$. En cambio, la rampa y los filtros A, C, D, E y F se anulan en frecuencia cero.
+
+El filtro C introduce un corte compacto relativo a la frecuencia máxima de la grilla discreta:
+\[
+\tau_C(\sigma)
+=
+|\sigma|\left(1-\frac{|\sigma|}{\sigma_c}\right)_+,
+\qquad
+\sigma_c=0.6\sigma_{\max}.
+\]
+Aquí $(a)_+=\max\{a,0\}$.
+
+\subsection*{Filtros D, E y F}
+
+Los filtros D, E y F crecen como la rampa hasta $|\sigma|=20$ y luego modifican el tratamiento de frecuencias mayores. El filtro D es triangular:
+\[
+\tau_D(\sigma)=
+\begin{cases}
+|\sigma|, & |\sigma|\le 20,\\
+40-|\sigma|, & 20<|\sigma|\le 40,\\
+0, & |\sigma|>40.
+\end{cases}
+\]
+El filtro E usa decaimiento exponencial moderado:
+\[
+\tau_E(\sigma)=
+\begin{cases}
+|\sigma|, & |\sigma|\le 20,\\
+20\exp[-0.08(|\sigma|-20)], & |\sigma|>20.
+\end{cases}
+\]
+El filtro F usa decaimiento exponencial más rápido:
+\[
+\tau_F(\sigma)=
+\begin{cases}
+|\sigma|, & |\sigma|\le 20,\\
+20\exp[-0.50(|\sigma|-20)], & |\sigma|>20.
+\end{cases}
 \]
 
-De este modo, el método de reconstrucción puede interpretarse como la aplicación de un operador cuyo símbolo está dado por la función $A(\sigma)$. Esta perspectiva permite modificar de manera controlada el comportamiento espectral del algoritmo mediante la elección adecuada del filtro.
+Estos seis filtros no se presentan como filtros óptimos. Su propósito es explorar, bajo una misma configuración numérica, cómo distintas respuestas espectrales alteran la reconstrucción y su sensibilidad al ruido.
 
-\subsection*{Familias de filtros consideradas}
+La Figura~\ref{fig:chapter3-symbols} muestra la rampa y los filtros A--F sobre la grilla de frecuencias usada por la DFT.
 
-Con el fin de analizar de manera sistemática el comportamiento del método de reconstrucción, se consideran distintas familias de funciones de filtro, clasificadas según sus propiedades espectrales:
-
-\begin{itemize}
-    \item \textbf{Filtros tipo rampa perturbada:}
-    \[
-    A(\sigma) = |\sigma|\,(1 + \varepsilon(\sigma)),
-    \]
-    donde $\varepsilon(\sigma)$ es una función que introduce variaciones locales en el espectro. Estos filtros permiten modificar selectivamente la amplificación en distintas regiones de frecuencia.
-
-    \item \textbf{Filtros de crecimiento no lineal:}
-    \[
-    A(\sigma) = \sqrt{1 + \sigma^{2}},
-    \]
-    los cuales presentan un crecimiento distinto al lineal y permiten estudiar variaciones en la recuperación de altas frecuencias.
-
-    \item \textbf{Filtros con saturación:}
-    \[
-    A(\sigma) = |\sigma|\,\tanh(|\sigma|),
-    \]
-    que limitan la amplificación en altas frecuencias, introduciendo un efecto regularizador.
-
-    \item \textbf{Filtros con anulación espectral:}
-    \[
-    A(\sigma) = 0 \quad \text{para } \sigma \in I,
-    \]
-    donde $I \subset \mathbb{R}$ es un intervalo. Estos filtros permiten analizar el efecto de la pérdida de información en bandas específicas del espectro.
-\end{itemize}
-
-Esta clasificación permite organizar de manera coherente los experimentos numéricos y relacionar directamente las propiedades de cada filtro con su comportamiento en la reconstrucción.
-
-\subsection*{Interpretación espectral}
-
-Desde el punto de vista espectral, la función $A(\sigma)$ determina completamente el comportamiento del operador de reconstrucción en el dominio de frecuencias. En particular, el crecimiento de $A(\sigma)$ para valores grandes de $|\sigma|$ está directamente relacionado con la amplificación de altas frecuencias y, por tanto, con la capacidad de resolución del método.
-
-Por otro lado, la atenuación de $A(\sigma)$ en ciertas regiones del espectro permite reducir el efecto del ruido, pero introduce pérdida de información que puede manifestarse como artefactos o pérdida de detalle en la reconstrucción.
-
-Este compromiso entre resolución y estabilidad es una característica fundamental del problema de reconstrucción tomográfica y se manifiesta de manera explícita en la elección de la función de filtro.
-
-\subsection*{Observaciones}
-
-La formulación anterior pone de manifiesto que el método de retroproyección filtrada no está determinado de manera única, sino que da lugar a una familia de operadores parametrizados por la función de filtro $A(\sigma)$.
-
-Desde un punto de vista funcional, el operador de reconstrucción puede interpretarse como un operador pseudo-diferencial cuyo símbolo está dado por $A(\sigma)$. En consecuencia, las propiedades analíticas del operador —tales como regularidad, estabilidad y capacidad de inversión— están directamente relacionadas con el comportamiento de la función de filtro.
-
-El análisis de estas funciones desde un punto de vista espectral permite comprender de manera sistemática el comportamiento del algoritmo de reconstrucción. En particular, como se mostrará en la sección siguiente, las propiedades cualitativas de la reconstrucción dependen de manera esencial de la forma de $A(\sigma)$, de su comportamiento asintótico y de la distribución de sus valores en el dominio de frecuencias.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.86\textwidth]{Figures/Chapter3/symbols_ramp_A_F.pdf}
+    \caption{Símbolos discretos evaluados sobre la grilla de frecuencias de longitud $N_{\mathrm{fft}}=1024$. La rampa se usa como referencia; los símbolos A--F son filtros exploratorios para estudiar el efecto de distintas modificaciones espectrales.}
+    \label{fig:chapter3-symbols}
+\end{figure}

@@ -123,3 +123,33 @@ FFT -> M_tau -> IFFT -> retroproyeccion
 - Mapa de color principal: bone.
 - Ruido gaussiano con semilla fija solo si queda documentado.
 - Las figuras finales deben ser reproducibles dentro de tesis/ y no depender de ../radon ni ../radon_intr.
+
+---
+
+## Etapa 3B y 3C
+
+Etapa 3B cerrada en commit 43efd429b5c87dab827f98f3cfb7f12de15adc78.
+
+Implementacion numerica reproducible ubicada en tesis/code, con salidas en Figures/Chapter3, Tables/Chapter3 y Results/Chapter3.
+
+Parametros canonicos del capitulo 3:
+
+```text
+N = 256
+R = 0.9
+N_t = 256
+N_fft = 1024
+M = 90
+Delta theta = 2 grados
+seed = 42
+noise_level = 0.05
+circle = True
+```
+
+Decision Etapa 3C: titulo del capitulo 3 cambiado a Implementacion numerica y analisis de la retroproyeccion filtrada.
+
+El filtrado discreto debe explicarse con zero-padding centrado P, recorte C, DFT F_Nfft y multiplicador M_tau evaluado sobre fftfreq. N_fft es longitud auxiliar y no agrega datos ni resolucion.
+
+La tabla de metricas de Chapter3 incluye RMSE, error relativo L2 y razon de medias. RMSE y error relativo son metricas principales; la razon de medias es solo diagnostico de amplitud y no factor de escala.
+
+Se agrega referencia formal a scikit-image solamente para justificar el uso de skimage.transform.radon en la generacion del sinograma.

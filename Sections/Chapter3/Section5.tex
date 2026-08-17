@@ -1,51 +1,43 @@
-\section{Experimentos numéricos}
+\section{Resultados y discusión}
 
-En esta sección se presentan los resultados obtenidos mediante la implementación discreta del método de retroproyección filtrada descrita en las secciones anteriores. El objetivo es ilustrar el efecto de distintas funciones de filtro sobre la calidad de la reconstrucción y validar las observaciones realizadas en el análisis espectral.
+Esta sección integra las reconstrucciones y métricas generadas con la configuración descrita. La interpretación se limita a los filtros evaluados, al fantoma usado y a la realización de ruido considerada.
 
-\subsection*{Configuración del experimento}
+\subsection*{Reconstrucciones sin ruido}
 
-Se considera un \emph{phantom} sintético definido sobre el dominio $[-1,1]^2$, discretizado mediante una malla uniforme de tamaño $256 \times 256$. Este phantom contiene estructuras geométricas con distintos niveles de intensidad, lo que permite evaluar la capacidad de resolución del método de reconstrucción.
+La Figura~\ref{fig:chapter3-recon-noiseless} muestra las reconstrucciones obtenidas a partir del sinograma sin ruido. Visualmente, la rampa recupera la estructura principal del fantoma, mientras que los filtros D y E producen resultados muy cercanos y ligeramente mejores según las métricas de la Tabla~\ref{tab:chapter3-metrics}.
 
-A partir de esta imagen, se calcula el sinograma discreto utilizando un conjunto de ángulos equiespaciados en el intervalo $[0,\pi)$. Las proyecciones se obtienen mediante rotaciones de la imagen seguidas de sumas discretas, como se describió en la Sección 3.1.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.96\textwidth]{Figures/Chapter3/reconstructions_noiseless.pdf}
+    \caption{Reconstrucciones obtenidas sin ruido para la rampa y los filtros A--F. El último panel muestra el fantoma de referencia bajo la misma escala de color usada para las reconstrucciones, lo que permite comparar amplitud y estructura visual.}
+    \label{fig:chapter3-recon-noiseless}
+\end{figure}
 
-En algunos experimentos, se consideran versiones perturbadas del sinograma mediante la adición de ruido, con el fin de analizar la estabilidad del método frente a errores en los datos.
+En términos de error relativo, los menores valores sin ruido corresponden a E, con $0.134362$, y D, con $0.134375$. La diferencia entre ambos es mínima, por lo que deben interpretarse como esencialmente empatados en esta configuración. La rampa obtiene $0.139700$, y F obtiene $0.142715$. El filtro C alcanza $0.155572$, mientras que A y B presentan errores mayores, $0.272494$ y $0.694462$, respectivamente.
 
-\subsection*{Reconstrucción mediante FBP}
+\subsection*{Reconstrucciones con ruido}
 
-La reconstrucción de la imagen se realiza aplicando el método de retroproyección filtrada. Para cada proyección, se calcula su transformada discreta de Fourier, se aplica una función de filtro $A(\sigma)$ en el dominio de frecuencias y, posteriormente, se obtiene la proyección filtrada mediante la transformada inversa.
+La Figura~\ref{fig:chapter3-recon-noisy} muestra las reconstrucciones obtenidas a partir del sinograma perturbado con ruido gaussiano. Bajo la realización de ruido considerada, los filtros que atenúan altas frecuencias reducen de forma marcada la amplificación del ruido respecto de la rampa.
 
-Finalmente, las proyecciones filtradas se retroproyectan sobre la malla espacial para obtener la imagen reconstruida.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.96\textwidth]{Figures/Chapter3/reconstructions_noisy.pdf}
+    \caption{Reconstrucciones obtenidas a partir de un único sinograma ruidoso, común a todos los filtros. Las diferencias visuales reflejan el compromiso entre preservación de detalle y atenuación de altas frecuencias bajo la realización de ruido considerada.}
+    \label{fig:chapter3-recon-noisy}
+\end{figure}
 
-Como referencia, se considera en primer lugar el filtro rampa
-\[
-A(\sigma) = |\sigma|,
-\]
-que corresponde al caso ideal derivado del modelo continuo.
+Entre los filtros evaluados, C obtiene el menor error relativo con ruido, $0.272036$, seguido por F con $0.325266$. Los filtros E y D quedan en un rango intermedio, con $0.389911$ y $0.397104$, respectivamente. La rampa y A presentan errores relativos mayores, $1.113321$ y $1.137388$, consistentes con una mayor amplificación de altas frecuencias. El filtro B alcanza $1.305268$; su comportamiento desfavorable es consistente con su respuesta no nula en frecuencia cero y su mayor peso de bajas frecuencias, aunque este experimento no constituye una demostración causal completa.
 
-\subsection*{Comparación de funciones de filtro}
+\subsection*{Métricas cuantitativas}
 
-Se analizan distintas funciones de filtro $A(\sigma)$, incluyendo perturbaciones del filtro rampa, funciones con crecimiento no lineal y filtros que atenúan o anulan determinadas regiones del espectro.
+La Tabla~\ref{tab:chapter3-metrics} resume RMSE, error relativo y razón de medias. RMSE y error relativo son las métricas principales. La razón de medias se incluye únicamente como diagnóstico de amplitud y no se usa para reescalar ni para seleccionar filtros.
 
-Las Figuras correspondientes muestran, para cada caso, la imagen original, el sinograma y las reconstrucciones obtenidas mediante los distintos filtros. Estas imágenes permiten comparar visualmente el efecto de cada función de filtro sobre la calidad de la reconstrucción.
+\begin{table}[htbp]
+    \centering
+    \caption{Métricas de reconstrucción calculadas sobre los índices $\mathcal I_R=\{(i,j):x_i^2+y_j^2\le R^2\}$. RMSE y error relativo en norma $\ell^2$ son las métricas principales; la razón de medias se reporta únicamente como diagnóstico de amplitud.}
+    \label{tab:chapter3-metrics}
+    \small
+    \input{Tables/Chapter3/metrics_table.tex}
+\end{table}
 
-En particular, se observa que:
-
-\begin{itemize}
-    \item Los filtros con crecimiento similar al de $|\sigma|$ permiten recuperar con mayor fidelidad los detalles finos de la imagen, aunque son más sensibles al ruido.
-    
-    \item Los filtros que atenúan las altas frecuencias producen reconstrucciones más suaves, pero con pérdida de resolución en los bordes.
-    
-    \item La eliminación de determinadas bandas de frecuencia genera artefactos visibles en la reconstrucción, lo que confirma la importancia de la cobertura espectral.
-\end{itemize}
-
-\subsection*{Discusión}
-
-Los resultados numéricos obtenidos son coherentes con el análisis espectral desarrollado en la sección anterior. En efecto, la calidad de la reconstrucción depende de manera esencial de la forma de la función de filtro $A(\sigma)$.
-
-En particular, el comportamiento asintótico de $A(\sigma)$ determina el grado de amplificación de las altas frecuencias, mientras que su forma global controla la distribución de energía en el dominio de Fourier. Estas propiedades se reflejan directamente en las características visuales de las reconstrucciones.
-
-\subsection*{Observaciones finales}
-
-Los experimentos presentados muestran que el método de retroproyección filtrada puede interpretarse como una familia de algoritmos parametrizados por la función de filtro $A(\sigma)$. Esta perspectiva permite analizar de manera sistemática el efecto de distintas elecciones del filtro y proporciona un marco conceptual unificado para el estudio de métodos de reconstrucción tomográfica.
-
-En particular, el análisis combinado de herramientas teóricas y experimentales permite comprender el papel de los multiplicadores de Fourier en el proceso de reconstrucción y constituye una base sólida para el diseño y evaluación de nuevos filtros.
+Los resultados ilustran el compromiso entre resolución y estabilidad: sin ruido, las respuestas próximas a la rampa conservan mejor los detalles; con ruido, atenuar altas frecuencias reduce el error a costa de suavizado. El desempeño de C se limita a esta configuración y realización de ruido, sin implicar superioridad universal.

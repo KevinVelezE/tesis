@@ -1,76 +1,77 @@
-\section{Retroproyección y reconstrucción discreta}
+\section{Algoritmo discreto de retroproyección filtrada}
 
-A partir de la discretización introducida en la sección anterior, es posible definir versiones discretas del operador de retroproyección y de los métodos de reconstrucción asociados. Esta formulación constituye la base para la implementación numérica del método de retroproyección filtrada y permite establecer un puente entre el modelo continuo y su realización computacional.
+La retroproyección filtrada discreta implementa la fórmula continua de FBP mediante operaciones finitas en la variable del detector y una cuadratura angular. En esta sección se separan la retroproyección sin filtrar, el filtrado por columnas y la reconstrucción final.
 
 \subsection*{Retroproyección discreta}
 
-Sea $g(r,\theta)$ un sinograma discreto asociado a una imagen $f \in \mathbb{R}^{N \times N}$. La retroproyección discreta se define como una aproximación del operador continuo adjunto de la transformada de Radon
+El operador continuo de retroproyección está dado por
 \[
-\mathcal{R}^{*}g(x) = \int_{0}^{\pi} g(x \cdot \omega(\theta), \theta)\, d\theta,
+\mathcal R^*g(x)=\int_0^\pi g(x\cdot\omega(\theta),\theta)\,d\theta,
 \]
-donde $\omega(\theta) = (\cos\theta, \sin\theta)$.
-
-En el contexto discreto, esta integral se aproxima mediante una suma finita sobre un conjunto de ángulos equiespaciados $\{\theta_k\}_{k=0}^{M-1}$:
+con $\omega(\theta)=(\cos\theta,\sin\theta)$. En la malla discreta se aproxima por
 \[
-(\mathcal{R}^{*}_{d} g)(x_{i},y_{j}) \approx \sum_{k=0}^{M-1} g(r_{i,j,k}, \theta_k)\, \Delta \theta,
+(\mathcal R_d^*g)_{i,j}
+=
+\Delta\theta\sum_{k=0}^{M-1}
+\mathcal I_t\bigl[g_{\cdot,k}\bigr]
+\bigl(t(x_i,y_j,\theta_k)\bigr),
 \]
-donde
+donde $\mathcal I_t$ denota interpolación lineal en la variable del detector. La geometría matemática usa $t(x,y,\theta)=x\cdot\omega(\theta)$; en la implementación matricial se toma en cuenta la orientación vertical de las filas para evaluar correctamente las coordenadas cartesianas.
+
+La retroproyección sin filtrar se obtiene aplicando directamente este operador al sinograma:
 \[
-r_{i,j,k} = x_i \cos\theta_k + y_j \sin\theta_k.
+f_{\mathrm{BP}}=\mathcal R_d^*g.
 \]
+Como se discutió en el capítulo anterior, $\mathcal R^*\mathcal R$ no es la identidad; por ello esta reconstrucción presenta difuminado y requiere filtrado previo.
 
-Dado que los valores $r_{i,j,k}$ no coinciden en general con los nodos de discretización en la variable $r$, es necesario emplear esquemas de interpolación para evaluar el sinograma en dichos puntos. Este paso introduce errores numéricos que afectan la precisión de la reconstrucción.
+\subsection*{Filtrado discreto por columnas}
 
-Es importante señalar que el operador $\mathcal{R}^{*}$ corresponde al adjunto de la transformada de Radon, y no a su inverso. Por tanto, la retroproyección por sí sola no permite recuperar la imagen original.
+El filtrado se aplica independientemente a cada columna angular $g_{\cdot,k}\in\mathbb R^{N_t}$. Para distinguir la transformada de Fourier continua de la transformada discreta usada en el código, se introducen los siguientes operadores:
+\begin{itemize}
+    \item $P:\mathbb R^{N_t}\to\mathbb R^{N_{\mathrm{fft}}}$, operador de zero-padding centrado.
+    \item $C:\mathbb R^{N_{\mathrm{fft}}}\to\mathbb R^{N_t}$, operador de recorte al intervalo detector original.
+    \item $F_{N_{\mathrm{fft}}}$, DFT de longitud $N_{\mathrm{fft}}$.
+    \item $M_\tau[m]=\tau(\sigma_m)$, vector multiplicador evaluado en la grilla de frecuencias $\sigma_m$ generada con \texttt{fftfreq}.
+\end{itemize}
 
-
-\subsection*{Reconstrucción mediante retroproyección no filtrada}
-
-Una primera aproximación de la imagen puede obtenerse aplicando directamente la retroproyección discreta al sinograma:
+Para cada columna angular se calcula
 \[
-f_{\mathrm{BP}} = \mathcal{R}^{*}_{d} g.
+g^\tau_{\cdot,k}
+=
+C F_{N_{\mathrm{fft}}}^{-1}
+\operatorname{diag}(M_\tau)
+F_{N_{\mathrm{fft}}}
+P g_{\cdot,k}.
 \]
-
-Esta reconstrucción, conocida como \emph{retroproyección no filtrada}, presenta un efecto de difuminado característico. Desde el punto de vista analítico, este fenómeno puede explicarse a través del operador compuesto $\mathcal{R}^{*}\mathcal{R}$, el cual no es la identidad, sino un operador integral que actúa como un suavizado de la imagen original.
-
-En el dominio de Fourier, este comportamiento se traduce en una atenuación de las componentes de alta frecuencia, lo que produce pérdida de resolución y la aparición de artefactos en la reconstrucción. Este hecho pone de manifiesto que la retroproyección debe ser corregida mediante un proceso de filtrado adecuado.
-
-
-\subsection*{Incorporación del filtrado}
-
-Para compensar la pérdida de información introducida por el operador $\mathcal{R}^{*}\mathcal{R}$, se introduce un paso de filtrado en el dominio de Fourier. En el contexto discreto, este proceso se implementa aplicando la transformada discreta de Fourier en la variable $r$ para cada ángulo $\theta_k$.
-
-Denotando por $\widehat{g}(\sigma,\theta_k)$ la transformada de Fourier de la proyección $g(r,\theta_k)$, se define la proyección filtrada mediante la multiplicación por una función de filtro $A(\sigma)$:
+En los experimentos se usa
 \[
-\widehat{g}_{A}(\sigma,\theta_k) = A(\sigma)\,\widehat{g}(\sigma,\theta_k).
+N_t=256,
+\qquad
+N_{\mathrm{fft}}=1024.
 \]
+La longitud $N_{\mathrm{fft}}$ es auxiliar: no añade datos ni resolución espacial. Su función es reducir los efectos de tratar directamente cada proyección finita como si fuera periódica, es decir, mitigar artefactos asociados a la convolución circular de la DFT.
 
-Posteriormente, se aplica la transformada inversa de Fourier para obtener
+\subsection*{Reconstrucción filtrada}
+
+Luego de filtrar todas las columnas, la reconstrucción se define como
 \[
-g_{A}(r,\theta_k).
+f_\tau=\mathcal R_d^*g^\tau.
 \]
-
-Desde un punto de vista teórico, la elección del filtro $A(\sigma)$ está relacionada con la inversión del operador $\mathcal{R}^{*}\mathcal{R}$, el cual puede interpretarse como un multiplicador en el dominio de Fourier. En particular, el filtro ideal presenta un crecimiento proporcional a $|\sigma|$, lo que explica su papel en la recuperación de las altas frecuencias.
-
-
-\subsection*{Método de retroproyección filtrada}
-
-Una vez obtenidas las proyecciones filtradas, la reconstrucción se realiza mediante la retroproyección discreta:
+Para la rampa canónica,
 \[
-f_{A} = \mathcal{R}^{*}_{d} g_{A}.
+\tau_{\mathrm{rampa}}(\sigma)=|\sigma|,
 \]
-
-Este procedimiento constituye la versión discreta del método de retroproyección filtrada (FBP), que puede interpretarse como una aproximación del operador continuo
+esta expresión es la contraparte discreta de
 \[
-f = \mathcal{R}^{*} \bigl( \mathcal{F}_{A} \mathcal{R}f \bigr),
+f=\mathcal R^*\mathcal F_t^{-1}\bigl[|\sigma|\,\mathcal F_t(\mathcal Rf)\bigr].
 \]
-donde $\mathcal{F}_{A}$ es un operador multiplicador en el dominio de Fourier.
+No se introducen factores $1/2$, $1/\pi$, correcciones empíricas ni reescalamientos de las reconstrucciones.
 
-Dependiendo de la normalización adoptada en la transformada discreta de Fourier, pueden aparecer factores constantes en la implementación del método. Estos no afectan el comportamiento cualitativo de la reconstrucción.
+La Figura~\ref{fig:chapter3-bp-vs-fbp} compara la retroproyección sin filtrar con la reconstrucción FBP usando la rampa.
 
-
-\subsection*{Observaciones}
-
-El esquema descrito permite implementar de manera eficiente el método de retroproyección filtrada en un entorno discreto. No obstante, su desempeño depende de varios factores, entre los que destacan la resolución espacial, la discretización angular y la elección de la función de filtro $A(\sigma)$.
-
-En particular, la elección del filtro determina el equilibrio entre resolución y estabilidad frente al ruido. Este aspecto constituye el eje central del análisis desarrollado en las secciones siguientes, donde se estudiará el comportamiento de distintas familias de filtros desde un punto de vista espectral.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.86\textwidth]{Figures/Chapter3/bp_vs_fbp.pdf}
+    \caption{Comparación entre la retroproyección sin filtrar y la retroproyección filtrada con la rampa. La retroproyección directa produce una imagen difuminada, mientras que el filtrado previo compensa parcialmente el suavizado asociado a $\mathcal R^*\mathcal R$.}
+    \label{fig:chapter3-bp-vs-fbp}
+\end{figure}
