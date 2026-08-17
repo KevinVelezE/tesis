@@ -1,19 +1,21 @@
 {
   "circle": true,
-  "delta_sigma": 0.12451171875000044,
-  "delta_t": 0.007843137254901933,
+  "delta_sigma": 0.125,
+  "delta_t": 0.0078125,
   "delta_theta": 0.03490658503988659,
-  "metric_hash": "583f3411f5f288ee345cadac8d93752bd0785135f429781408ea12363819fca4",
+  "detector_zero_index": 128,
+  "h": 0.0078125,
+  "metric_hash": "5c898498df56fe763465ca6729afd7eb60a9e9d3613f45421032ff357c8c2802",
   "n_fft": 1024,
   "n_t": 256,
   "orientation_check": {
     "phantom_center": [
-      -0.04380054738789595,
-      0.08365987072660294
+      -0.0792237755847951,
+      0.11746809515107226
     ],
     "ramp_reconstruction_center": [
-      -0.05738571397417601,
-      0.08912004865182709
+      -0.05857579294066695,
+      0.09802551214006061
     ]
   },
   "parameters": {
@@ -30,7 +32,8 @@
     "table_dir": "Tables/Chapter3",
     "theta_step_degrees": 2
   },
-  "sigma_noise": 0.17043733475055423,
+  "sigma_noise": 0.17075776605794168,
+  "spatial_zero_index": 128,
   "versions": {
     "matplotlib": "3.11.1",
     "numpy": "2.5.2",

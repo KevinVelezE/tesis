@@ -5,7 +5,10 @@ from skimage.transform import radon
 
 
 def make_phantom(n: int, radius: float):
-    grid = np.linspace(-1.0, 1.0, n)
+    h = 2.0 / n
+    grid = (np.arange(n, dtype=float) - n // 2) * h
+    if grid[n // 2] != 0.0:
+        raise ValueError("spatial grid is not centered at index n // 2")
     xv, yv = np.meshgrid(grid, grid, indexing="xy")
     image = np.zeros((n, n), dtype=float)
     image[(xv**2 + yv**2) <= radius**2] = 0.6
@@ -22,20 +25,23 @@ def make_phantom(n: int, radius: float):
         image[((xv - cx) ** 2 + (yv - cy) ** 2) <= rad**2] = val
     ellipse = ((xv + 0.20 * radius) / (0.22 * radius)) ** 2 + ((yv - 0.25 * radius) / (0.10 * radius)) ** 2 <= 1.0
     image[ellipse] = 5.0
-    return xv, yv, image
+    return xv, yv, image, h
 
 
 def angle_grid(theta_step_degrees: int):
     return np.arange(0.0, 180.0, theta_step_degrees, dtype=float)
 
 
-def sinogram(image: np.ndarray, theta_degrees: np.ndarray, delta_x: float):
-    return radon(image, theta=theta_degrees, circle=True) * delta_x
+def sinogram(image: np.ndarray, theta_degrees: np.ndarray, delta_x: float, circle: bool):
+    return radon(image, theta=theta_degrees, circle=circle) * delta_x
 
 
 def detector_grid(n_detector: int, delta_x: float):
     center = n_detector // 2
-    return (np.arange(n_detector, dtype=float) - center) * delta_x
+    grid = (np.arange(n_detector, dtype=float) - center) * delta_x
+    if grid[center] != 0.0:
+        raise ValueError("detector grid is not centered at index n_detector // 2")
+    return grid
 
 
 def frequency_grid(n_detector: int, delta_t: float):

@@ -118,7 +118,7 @@ FFT -> M_tau -> IFFT -> retroproyeccion
 
 ## Experimentos canonicos previstos
 
-- Fantoma geometrico principal de radon/src/phantom.py.
+- Fantoma geometrico principal implementado de forma autocontenida en code/tomography.py.
 - Parametros iniciales: N = 256 y R = 0.9.
 - Mapa de color principal: bone.
 - Ruido gaussiano con semilla fija solo si queda documentado.
@@ -150,7 +150,7 @@ Decision Etapa 3C: titulo del capitulo 3 cambiado a Implementacion numerica y an
 
 El filtrado discreto debe explicarse con zero-padding centrado P, recorte C, DFT F_Nfft y multiplicador M_tau evaluado sobre fftfreq. N_fft es longitud auxiliar y no agrega datos ni resolucion.
 
-La tabla de metricas de Chapter3 incluye RMSE, error relativo L2 y razon de medias. RMSE y error relativo son metricas principales; la razon de medias es solo diagnostico de amplitud y no factor de escala.
+La tabla de metricas de Chapter3 incluye RMSE, error relativo en norma discreta ell^2 y razon de medias. RMSE y error relativo son metricas principales; la razon de medias es solo diagnostico de amplitud y no factor de escala.
 
 Se agrega referencia formal a scikit-image solamente para justificar el uso de skimage.transform.radon en la generacion del sinograma.
 
@@ -191,7 +191,18 @@ Decisiones editoriales:
 Interpretacion de cierre que debe preservarse:
 
 - La rampa canonica es tau_rampa(sigma)=|sigma|, sin factores adicionales.
-- D y E quedan practicamente empatados sin ruido.
+- La rampa obtiene el menor error sin ruido; E y D ocupan las posiciones siguientes con resultados cercanos entre si.
 - C obtiene el menor error con ruido solo bajo la configuracion y realizacion ruidosa estudiadas.
 - No se afirma superioridad universal de ningun filtro.
 - Las limitaciones son fantoma sintetico, geometria paralela bidimensional, una realizacion de ruido, filtros exploratorios y ausencia de datos clinicos o tridimensionales.
+
+---
+
+## Etapa 5A
+
+- La malla espacial es semiabierta en [-1,1), con h=2/N.
+- El origen espacial y el origen del detector corresponden al indice 128.
+- CFG.circle se conecta directamente con el parametro circle de skimage.transform.radon.
+- El hash reproducible de metricas es 5c898498df56fe763465ca6729afd7eb60a9e9d3613f45421032ff357c8c2802.
+- Sin ruido, la rampa ocupa la primera posicion, seguida por E y D.
+- Con ruido, C ocupa la primera posicion solo para la configuracion y realizacion estudiadas.

@@ -4,12 +4,13 @@ La implementación numérica parte del modelo continuo descrito en los capítulo
 
 \subsection*{Discretización del dominio espacial}
 
-Se considera una malla cartesiana uniforme en $[-1,1]^2$ de tamaño $N\times N$, con $N=256$. Los nodos se escriben como
+Se considera una malla cartesiana uniforme semiabierta en $[-1,1)^2$ de tamaño $N\times N$, con $N=256$. Con paso espacial $h=2/N$, los nodos se escriben como
 \[
-x_i=-1+\frac{2i}{N-1},\qquad
-y_j=-1+\frac{2j}{N-1},
-\qquad 0\le i,j\le N-1.
+x_i=\left(i-\frac{N}{2}\right)h,\qquad
+y_j=\left(j-\frac{N}{2}\right)h,
+\qquad i,j=0,\ldots,N-1.
 \]
+Así, el índice $N/2=128$ representa exactamente el origen. Esta elección coincide con la convención de \texttt{scikit-image} 0.26.0, que sitúa el eje de rotación de \texttt{radon} en el píxel de índices \texttt{(N//2,N//2)} \cite{scikitimage_radon026}.
 El fantoma utilizado es geométrico, asimétrico y está contenido en el disco
 \[
 x^2+y^2\le R^2,
@@ -39,11 +40,11 @@ La variable del detector se discretiza como
 t_\ell=(\ell-N_t/2)\Delta t,
 \qquad \ell=0,\ldots,N_t-1,
 \]
-donde $\Delta t$ coincide con el paso espacial de la malla. Esta elección refleja que el detector tiene un número par de muestras y se centra computacionalmente con el índice $N_t/2$.
+donde $\Delta t=h=2/N$. El índice $N_t/2=128$ corresponde exactamente a $t=0$ y coincide con el eje del sinograma, que la implementación ubica en \texttt{N\_t//2} \cite{scikitimage_radon026}.
 
 \subsection*{Generación del sinograma}
 
-El sinograma se genera con la rutina \texttt{radon} de \texttt{scikit-image} \cite{vanderwalt2014scikitimage}, usando la opción \texttt{circle=True}. Esta opción supone que la imagen es nula fuera del círculo inscrito en la malla y permite conservar $N_t=N=256$ muestras de detector. No describe una geometría de adquisición circular: la adquisición sigue correspondiendo a una geometría de haz paralelo.
+El sinograma se genera con la rutina \texttt{radon} de \texttt{scikit-image} \cite{vanderwalt2014scikitimage}, usando la opción \texttt{circle=True}. En la versión 0.26.0, esta opción supone que la imagen es nula fuera del círculo inscrito en la malla y hace que el ancho de cada proyección sea igual a la menor dimensión de la imagen \cite{scikitimage_radon026}; por ello se conserva $N_t=N=256$. No describe una geometría de adquisición circular: la adquisición sigue correspondiendo a una geometría de haz paralelo.
 
 La definición geométrica continua no se modifica: la recta asociada a $(t,\theta)$ sigue dada por $x\cdot\omega(\theta)=t$, con $\omega(\theta)=(\cos\theta,\sin\theta)$. La implementación debe, sin embargo, distinguir esta convención matemática de la orientación vertical de las matrices digitales, cuyas filas crecen en sentido opuesto al eje cartesiano usual. Esta diferencia se corrige al retroproyectar, sin cambiar la definición de la transformada de Radon.
 

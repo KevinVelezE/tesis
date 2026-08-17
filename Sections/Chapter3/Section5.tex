@@ -4,7 +4,7 @@ Esta sección integra las reconstrucciones y métricas generadas con la configur
 
 \subsection*{Reconstrucciones sin ruido}
 
-La Figura~\ref{fig:chapter3-recon-noiseless} muestra las reconstrucciones obtenidas a partir del sinograma sin ruido. Visualmente, la rampa recupera la estructura principal del fantoma, mientras que los filtros D y E producen resultados muy cercanos y ligeramente mejores según las métricas de la Tabla~\ref{tab:chapter3-metrics}.
+La Figura~\ref{fig:chapter3-recon-noiseless} muestra las reconstrucciones obtenidas a partir del sinograma sin ruido. Visualmente, la rampa recupera la estructura principal del fantoma y obtiene el menor error relativo, mientras que los filtros E y D producen resultados cercanos entre sí según las métricas de la Tabla~\ref{tab:chapter3-metrics}.
 
 \begin{figure}[htbp]
     \centering
@@ -13,7 +13,7 @@ La Figura~\ref{fig:chapter3-recon-noiseless} muestra las reconstrucciones obteni
     \label{fig:chapter3-recon-noiseless}
 \end{figure}
 
-En términos de error relativo, los menores valores sin ruido corresponden a E, con $0.134362$, y D, con $0.134375$. La diferencia entre ambos es mínima, por lo que deben interpretarse como esencialmente empatados en esta configuración. La rampa obtiene $0.139700$, y F obtiene $0.142715$. El filtro C alcanza $0.155572$, mientras que A y B presentan errores mayores, $0.272494$ y $0.694462$, respectivamente.
+En términos de error relativo, el menor valor sin ruido corresponde a la rampa, con $0.097892$. Le siguen E, con $0.112767$, y D, con $0.113110$; la diferencia entre estos dos filtros es pequeña en esta configuración. F obtiene $0.127115$ y C alcanza $0.143042$, mientras que A y B presentan errores mayores, $0.253226$ y $0.687715$, respectivamente.
 
 \subsection*{Reconstrucciones con ruido}
 
@@ -26,7 +26,7 @@ La Figura~\ref{fig:chapter3-recon-noisy} muestra las reconstrucciones obtenidas 
     \label{fig:chapter3-recon-noisy}
 \end{figure}
 
-Entre los filtros evaluados, C obtiene el menor error relativo con ruido, $0.272036$, seguido por F con $0.325266$. Los filtros E y D quedan en un rango intermedio, con $0.389911$ y $0.397104$, respectivamente. La rampa y A presentan errores relativos mayores, $1.113321$ y $1.137388$, consistentes con una mayor amplificación de altas frecuencias. El filtro B alcanza $1.305268$; su comportamiento desfavorable es consistente con su respuesta no nula en frecuencia cero y su mayor peso de bajas frecuencias, aunque este experimento no constituye una demostración causal completa.
+Entre los filtros evaluados, C obtiene el menor error relativo con ruido, $0.266386$, seguido por F con $0.318981$. Los filtros E y D quedan en un rango intermedio, con $0.383664$ y $0.390949$, respectivamente. La rampa y A presentan errores relativos mayores, $1.134227$ y $1.157932$, consistentes con una mayor amplificación de altas frecuencias. El filtro B alcanza $1.323399$; su comportamiento desfavorable es consistente con su respuesta no nula en frecuencia cero y su mayor peso de bajas frecuencias, aunque este experimento no constituye una demostración causal completa.
 
 \subsection*{Métricas cuantitativas}
 

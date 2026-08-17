@@ -30,7 +30,7 @@ from tomography import (
 
 
 def save_figure(fig, path: Path):
-    fig.savefig(path.with_suffix(".pdf"), bbox_inches="tight")
+    fig.savefig(path.with_suffix(".pdf"), bbox_inches="tight", metadata={"CreationDate": None, "ModDate": None})
     fig.savefig(path.with_suffix(".png"), dpi=CFG.dpi_png, bbox_inches="tight")
     plt.close(fig)
 
@@ -70,9 +70,10 @@ def compute_run():
     if theta.size != CFG.m:
         raise ValueError("theta_step_degrees does not produce M angles")
 
-    xv, yv, phantom = make_phantom(CFG.n, CFG.radius)
-    delta_x = float(xv[0, 1] - xv[0, 0])
-    g = sinogram(phantom, theta, delta_x)
+    xv, yv, phantom, h = make_phantom(CFG.n, CFG.radius)
+    circle = CFG.circle
+    delta_x = h
+    g = sinogram(phantom, theta, delta_x, circle=circle)
     n_t = int(g.shape[0])
     n_fft = 1024
     t = detector_grid(g.shape[0], delta_x)
@@ -83,11 +84,16 @@ def compute_run():
     symbol_map = symbols(sigma)
     zero_values = check_symbols(symbol_map, sigma)
 
-    expected_n_t = CFG.n
-    if phantom.shape != (CFG.n, CFG.n) or g.shape != (expected_n_t, CFG.m):
+    if phantom.shape != (CFG.n, CFG.n) or g.shape[1] != CFG.m:
         raise ValueError("invalid phantom or sinogram dimensions")
+    if circle and n_t != CFG.n:
+        raise ValueError("circle=True must produce N_t=N detector samples")
     if n_t != 256 or n_fft != 1024:
         raise ValueError("unexpected detector or padded FFT length")
+    if xv[0, CFG.n // 2] != 0.0 or yv[CFG.n // 2, 0] != 0.0:
+        raise ValueError("spatial origin is not at index N // 2")
+    if t[n_t // 2] != 0.0:
+        raise ValueError("detector origin is not at index N_t // 2")
     finite_check("phantom", phantom)
     finite_check("sinogram", g)
 
@@ -140,6 +146,10 @@ def compute_run():
         "sigma": sigma,
         "n_t": n_t,
         "n_fft": n_fft,
+        "h": h,
+        "circle": circle,
+        "spatial_zero_index": CFG.n // 2,
+        "detector_zero_index": n_t // 2,
         "delta_x": delta_x,
         "delta_t": delta_t,
         "delta_sigma": delta_sigma,
@@ -192,7 +202,15 @@ def create_figures(data):
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))
     im0 = plot_image(axes[0], phantom, "Fantoma asimétrico", cmap)
     plt.colorbar(im0, ax=axes[0], fraction=0.046)
-    im1 = axes[1].imshow(g, cmap=cmap, aspect="auto", origin="lower", extent=[0, 178, data["t"][0], data["t"][-1]])
+    theta_step = data["theta"][1] - data["theta"][0]
+    detector_step = data["t"][1] - data["t"][0]
+    extent = [
+        data["theta"][0] - theta_step / 2.0,
+        data["theta"][-1] + theta_step / 2.0,
+        data["t"][0] - detector_step / 2.0,
+        data["t"][-1] + detector_step / 2.0,
+    ]
+    im1 = axes[1].imshow(g, cmap=cmap, aspect="auto", origin="lower", extent=extent)
     axes[1].set_title("Sinograma")
     axes[1].set_xlabel(r"$\theta$ (grados)")
     axes[1].set_ylabel(r"$t$")
@@ -247,7 +265,7 @@ def write_metrics(rows):
     with tex_path.open("w", encoding="utf-8") as f:
         f.write("\\begin{tabular}{llrrr}\n")
         f.write("\\toprule\n")
-        f.write("Caso & Filtro & RMSE & Error relativo $L^2$ & Razón media \\\\\n")
+        f.write("Caso & Filtro & RMSE & Error relativo $\\ell^2$ & Razón media \\\\\n")
         f.write("\\midrule\n")
         for row in rows:
             f.write(f"{display_case_name(row['case'])} & {display_filter_name(row['filter'])} & {row['rmse']:.6f} & {row['relative_l2']:.6f} & {row['mean_ratio_on_mask']:.6f} \\\\\n")
@@ -261,7 +279,7 @@ def write_report(data, metric_hash):
     with report.open("w", encoding="utf-8") as f:
         f.write("# Auditoría de normalización\n\n")
         f.write("Rampa implementada: `tau_rampa(sigma)=|sigma|`; no se usa `scale=0.5`.\n\n")
-        f.write("El sinograma se calcula con `skimage.transform.radon(..., circle=True)`.\n\n")
+        f.write(f"El sinograma se calcula con `skimage.transform.radon(..., circle={data['circle']})`.\n\n")
         f.write(f"N_t = {data['n_t']}\n\n")
         f.write(f"N_fft = {data['n_fft']}\n\n")
         f.write(f"Delta x = {data['delta_x']:.12g}\n\n")
@@ -290,7 +308,10 @@ def write_metadata(data, metric_hash):
         "sigma_noise": data["sigma_noise"],
         "n_t": data["n_t"],
         "n_fft": data["n_fft"],
-        "circle": CFG.circle,
+        "circle": data["circle"],
+        "h": data["h"],
+        "spatial_zero_index": data["spatial_zero_index"],
+        "detector_zero_index": data["detector_zero_index"],
         "delta_t": data["delta_t"],
         "delta_sigma": data["delta_sigma"],
         "delta_theta": data["delta_theta"],
