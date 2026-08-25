@@ -44,9 +44,9 @@ donde $\Delta t=h=2/N$. El índice $N_t/2=128$ corresponde exactamente a $t=0$ y
 
 \subsection*{Generación del sinograma}
 
-El sinograma se genera con la rutina \texttt{radon} de \texttt{scikit-image} \cite{vanderwalt2014scikitimage}, usando la opción \texttt{circle=True}. En la versión 0.26.0, esta opción supone que la imagen es nula fuera del círculo inscrito en la malla y hace que el ancho de cada proyección sea igual a la menor dimensión de la imagen \cite{scikitimage_radon026}; por ello se conserva $N_t=N=256$. No describe una geometría de adquisición circular: la adquisición sigue correspondiendo a una geometría de haz paralelo.
+El sinograma se genera con la rutina \texttt{radon} de \texttt{scikit-image} \cite{vanderwalt2014scikitimage}, usando la opción \texttt{circle=True}. En la versión 0.26.0, esta opción supone que la imagen es nula fuera del círculo inscrito en la malla y hace que el ancho de cada proyección sea igual a la menor dimensión de la imagen \cite{scikitimage_radon026}; por ello se conserva $N_t=N=256$. No describe una geometría de adquisición circular: la adquisición sigue correspondiendo a una geometría de haz paralelo.\\
 
-La definición geométrica continua no se modifica: la recta asociada a $(t,\theta)$ sigue dada por $x\cdot\omega(\theta)=t$, con $\omega(\theta)=(\cos\theta,\sin\theta)$. La implementación debe, sin embargo, distinguir esta convención matemática de la orientación vertical de las matrices digitales, cuyas filas crecen en sentido opuesto al eje cartesiano usual. Esta diferencia se corrige al retroproyectar, sin cambiar la definición de la transformada de Radon.
+La definición geométrica continua no se modifica: la recta asociada a $(t,\theta)$ sigue dada por $x\cdot\omega(\theta)=t$, con $\omega(\theta)=(\cos\theta,\sin\theta)$. La implementación debe, sin embargo, distinguir esta convención matemática de la orientación vertical de las matrices digitales, cuyas filas crecen en sentido opuesto al eje cartesiano usual. Esta diferencia se corrige al retroproyectar, sin cambiar la definición de la transformada de Radon.\\
 
 La Figura~\ref{fig:chapter3-phantom-sinogram} muestra el fantoma y el sinograma generado con estos parámetros.
 

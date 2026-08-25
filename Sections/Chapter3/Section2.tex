@@ -16,7 +16,7 @@ con $\omega(\theta)=(\cos\theta,\sin\theta)$. En la malla discreta se aproxima p
 \mathcal I_t\bigl[g_{\cdot,k}\bigr]
 \bigl(t(x_i,y_j,\theta_k)\bigr),
 \]
-donde $\mathcal I_t$ denota interpolación lineal en la variable del detector. La geometría matemática usa $t(x,y,\theta)=x\cdot\omega(\theta)$; en la implementación matricial se toma en cuenta la orientación vertical de las filas para evaluar correctamente las coordenadas cartesianas.
+donde $\mathcal I_t$ denota interpolación lineal en la variable del detector. La geometría matemática usa $t(x,y,\theta)=x\cdot\omega(\theta)$; en la implementación matricial se toma en cuenta la orientación vertical de las filas para evaluar correctamente las coordenadas cartesianas.\\
 
 La retroproyección sin filtrar se obtiene aplicando directamente este operador al sinograma:
 \[
@@ -65,7 +65,7 @@ esta expresión es la contraparte discreta de
 \[
 f=\mathcal R^*\mathcal F_t^{-1}\bigl[|\sigma|\,\mathcal F_t(\mathcal Rf)\bigr].
 \]
-No se introducen factores $1/2$, $1/\pi$, correcciones empíricas ni reescalamientos de las reconstrucciones.
+No se introducen factores $1/2$, $1/\pi$, correcciones empíricas ni reescalamientos de las reconstrucciones.\\
 
 La Figura~\ref{fig:chapter3-bp-vs-fbp} compara la retroproyección sin filtrar con la reconstrucción FBP usando la rampa.
 

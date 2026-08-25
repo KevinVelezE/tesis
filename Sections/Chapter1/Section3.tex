@@ -1,7 +1,7 @@
 \section{Multiplicadores de Fourier e inestabilidad}
 \label{FourierMultipliersInstability}
 
-La etapa de filtrado en la retroproyección filtrada se modela como un multiplicador de Fourier en la variable del detector. Esta formulación permite separar dos aspectos: la acción algebraica del filtro en frecuencia y el efecto analítico de amplificar o atenuar ciertas bandas del espectro.
+La etapa de filtrado en la retroproyección filtrada se modela como un multiplicador de Fourier en la variable del detector. Esta formulación permite separar dos aspectos: la acción algebraica del filtro en frecuencia y el efecto analítico de amplificar o atenuar ciertas bandas del espectro, entendido aquí como la distribución de la transformada de Fourier de la proyección en la variable de frecuencia \cite[Ap.~B.8]{kuchment2014}.\\
 
 Sea $\tau:\mathbb{R}\to\mathbb{C}$ una función medible y finita casi en todas partes. Definimos
 \[
@@ -16,7 +16,7 @@ T_{\tau}h
 =
 \mathcal{F}^{-1}\left(\tau\widehat h\right).
 \]
-La función $\tau$ se denomina símbolo del multiplicador. En esta tesis se usará la letra $\tau(\sigma)$ para los símbolos continuos de los filtros.
+La función $\tau$ se denomina símbolo del multiplicador. En esta tesis se usará la letra $\tau(\sigma)$ para los símbolos continuos de los filtros.\\
 
 Si $\tau\in L^{\infty}(\mathbb{R})$, entonces $D(T_{\tau})=L^{2}(\mathbb{R})$ y $T_{\tau}$ es un operador lineal acotado. En efecto, por Plancherel,
 \[
@@ -26,14 +26,14 @@ Si $\tau\in L^{\infty}(\mathbb{R})$, entonces $D(T_{\tau})=L^{2}(\mathbb{R})$ y 
 \leq
 \|\tau\|_{L^{\infty}}\,\|h\|_{L^{2}},
 \]
-para todo $h\in L^{2}(\mathbb{R})$. Esta es la clase más simple de filtros estables en norma $L^{2}$.
+para todo $h\in L^{2}(\mathbb{R})$. Esta es la clase más simple de filtros estables en norma $L^{2}$.\\
 
 El filtro rampa clásico de la retroproyección filtrada tiene símbolo
 \[
 \tau_{\mathrm{rampa}}(\sigma)=|\sigma|.
 \]
-Este símbolo no pertenece a $L^{\infty}(\mathbb{R})$ y, por tanto, no define un operador acotado en todo $L^{2}(\mathbb{R})$. En este caso el dominio es propio y contiene a $\mathcal{S}(\mathbb{R})$, que será suficiente para la derivación formal del método en el capítulo siguiente.
+Este símbolo no pertenece a $L^{\infty}(\mathbb{R})$ y, por tanto, no define un operador acotado en todo $L^{2}(\mathbb{R})$. En este caso el dominio es propio y contiene a $\mathcal{S}(\mathbb{R})$, que será suficiente para la derivación formal del método en el capítulo siguiente.\\
 
-Esta diferencia es central para interpretar la inestabilidad del problema tomográfico: el símbolo $|\sigma|$ crece sin cota y, por ello, las perturbaciones localizadas en altas frecuencias pueden ser amplificadas durante la reconstrucción, fenómeno característico en problemas inversos mal condicionados \cite{kirsch2011}. Los filtros modificados que se estudiarán más adelante reemplazan la rampa por símbolos $\tau(\sigma)$ diseñados para controlar ese compromiso entre resolución y estabilidad. Esta interpretación espectral es estándar en la presentación de la retroproyección filtrada; véanse, por ejemplo, Kak y Slaney \cite[Cap.~3]{kak_slaney1988} y Natterer \cite[Sec.~V.1]{natterer2001}.
+Esta diferencia es central para interpretar la inestabilidad del problema tomográfico: el símbolo $|\sigma|$ crece sin cota y, por ello, las perturbaciones localizadas en altas frecuencias pueden ser amplificadas durante la reconstrucción, fenómeno característico en problemas inversos mal condicionados \cite{kirsch2011}. Los filtros modificados que se estudiarán más adelante reemplazan la rampa por símbolos $\tau(\sigma)$ diseñados para controlar ese compromiso entre resolución y estabilidad. Esta interpretación espectral es estándar en la presentación de la retroproyección filtrada; véanse, por ejemplo, Kak y Slaney \cite[Cap.~3]{kak_slaney1988} y Natterer \cite[Sec.~V.1]{natterer2001}.\\
 
 En el capítulo computacional, la multiplicación por $\tau(\sigma)$ se representará de manera discreta mediante una matriz diagonal o un vector de entradas, denotado por $M_{\tau}$. Allí se especificarán la FFT, la malla de frecuencias y las normalizaciones numéricas correspondientes.

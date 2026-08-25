@@ -5,9 +5,9 @@ En el capítulo anterior se estableció la fórmula continua de inversión por r
 \[
 f=\mathcal R^*\mathcal F_t^{-1}\bigl[|\sigma|\,\mathcal F_t(\mathcal Rf)\bigr].
 \]
-El objetivo de este capítulo es trasladar esa formulación a una implementación discreta reproducible, manteniendo la rampa canónica $\tau_{\mathrm{rampa}}(\sigma)=|\sigma|$ y evitando factores empíricos o normalizaciones ajustadas al fantoma.
+El objetivo de este capítulo es trasladar esa formulación a una implementación discreta reproducible, manteniendo la rampa canónica $\tau_{\mathrm{rampa}}(\sigma)=|\sigma|$ y evitando factores empíricos o normalizaciones ajustadas al fantoma.\\
 
-El análisis se organiza alrededor de tres elementos: la discretización del modelo tomográfico, la aplicación de multiplicadores discretos en la variable del detector y la comparación de la rampa con seis filtros exploratorios. Los experimentos se realizan con un fantoma geométrico propio, una grilla espacial de tamaño $N=256$ y $M=90$ ángulos equiespaciados en $[0,\pi)$.
+El análisis se organiza alrededor de tres elementos: la discretización del modelo tomográfico, la aplicación de multiplicadores discretos en la variable del detector y la comparación de la rampa con seis filtros exploratorios. Los experimentos se realizan con un fantoma geométrico propio, una grilla espacial de tamaño $N=256$ y $M=90$ ángulos equiespaciados en $[0,\pi)$.\\
 
 La discusión cuantitativa se apoya en métricas calculadas sobre el disco de soporte del fantoma. Los resultados no buscan identificar filtros óptimos, sino documentar cómo distintas elecciones del símbolo modifican el compromiso entre resolución y estabilidad frente al ruido bajo una configuración numérica fija.
 
