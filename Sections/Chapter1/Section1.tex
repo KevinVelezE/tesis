@@ -25,8 +25,9 @@ h(t)
 =
 \mathcal{F}^{-1}\widehat h(t)
 =
-\int_{\mathbb{R}} \widehat h(\sigma)e^{2\pi i t\sigma}\,d\sigma.
+\int_{\mathbb{R}} \widehat h(\sigma)e^{2\pi i t\sigma}\,d\sigma,
 \]
+dado que $\widehat h\in\mathcal{S}(\mathbb R)$.
 En dos variables, para $f\in \mathcal{S}(\mathbb{R}^{2})$ se define
 \[
 \widehat f(\xi)
@@ -40,16 +41,18 @@ y la inversión toma la forma
 \[
 f(x)
 =
-\int_{\mathbb{R}^{2}} \widehat f(\xi)e^{2\pi i x\cdot \xi}\,d\xi.
+\int_{\mathbb{R}^{2}} \widehat f(\xi)e^{2\pi i x\cdot \xi}\,d\xi,
 \]
+dado que $\widehat f\in\mathcal{S}(\mathbb R^2)$.
 Usaremos $\sigma$ para la variable de frecuencia unidimensional, asociada a la variable del detector de las proyecciones, y $\xi$ para la variable de frecuencia en $\mathbb{R}^{2}$.
 
 Con esta normalización, el teorema de Plancherel \cite[Ap.~B.8]{kuchment2014} afirma que la transformada de Fourier se extiende de manera unitaria de $\mathcal{S}$ a $L^{2}$, es decir,
 \[
 \|\widehat h\|_{L^{2}(\mathbb{R})}=\|h\|_{L^{2}(\mathbb{R})},
 \qquad
-\|\widehat f\|_{L^{2}(\mathbb{R}^{2})}=\|f\|_{L^{2}(\mathbb{R}^{2})}.
+\|\widehat f\|_{L^{2}(\mathbb{R}^{2})}=\|f\|_{L^{2}(\mathbb{R}^{2})},
 \]
+puesto que $\mathcal{S}(\mathbb R^d)$ es un subespacio denso de $L^2(\mathbb R^d)$ para todo $d\geq 1$.
 Este resultado estándar será usado para interpretar los filtros como operadores en el dominio de frecuencias; puede consultarse en Natterer \cite[Sec.~VII.1]{natterer2001} y en Kuchment \cite[Ap.~B.8]{kuchment2014}. Estas fuentes pueden emplear normalizaciones de Fourier distintas de la adoptada aquí, pero las formulaciones son equivalentes mediante un cambio de escala en la variable de frecuencia.\\
 
 Es importante distinguir esta convención de la convención de frecuencia angular. Si se escribe $\eta=2\pi\sigma$, entonces las fórmulas equivalentes contienen factores adicionales de $2\pi$. En esta tesis no se usará $\eta$ como variable principal; el símbolo de los filtros se escribirá siempre como función de $\sigma$.

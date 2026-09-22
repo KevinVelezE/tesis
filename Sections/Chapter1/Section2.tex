@@ -3,9 +3,9 @@
 
 La transformada de Radon y la retroproyección filtrada se describen mediante operadores lineales. En esta sección se recuerdan únicamente las nociones generales que serán necesarias más adelante; las propiedades específicas del operador de Radon se desarrollarán en el capítulo siguiente.\\
 
-Sea $X$ un espacio vectorial normado y sea $Y$ otro espacio vectorial normado, ambos sobre $\mathbb{R}$ o $\mathbb{C}$. Una aplicación $T:X\to Y$ se llama operador lineal si
+Sean $X\neq\varnothing$ y $Y\neq\varnothing$ espacios vectoriales normados, ambos sobre $\mathbb{R}$ o $\mathbb{C}$. Una función $T:X\to Y$ se llama operador lineal si
 \[
-T(\alpha x+\beta y)=\alpha T x+\beta T y
+T(\alpha x+\beta y)=\alpha T x+\beta T y,
 \]
 para todo $x,y\in X$ y escalares $\alpha,\beta$. Si además existe una constante $C\geq 0$ tal que
 \[
@@ -14,13 +14,19 @@ para todo $x,y\in X$ y escalares $\alpha,\beta$. Si además existe una constante
 \]
 se dice que $T$ es acotado. En espacios normados, para operadores lineales, acotación y continuidad son equivalentes; este hecho básico puede consultarse en Rynne y Youngson \cite[Sec.~4.1]{rynne_youngson2000}.\\
 
-En los espacios $L^{2}$ se usa el producto interno
+Sea $\Omega\subseteq\mathbb R^d$ un conjunto no trivial y medible de Borel. En el espacio $L^{2}(\Omega)$ se usa el producto interno
 \[
 \langle u,v\rangle_{L^{2}(\Omega)}
 =
 \int_{\Omega} u(x)\overline{v(x)}\,dx,
 \]
-con la convención análoga en dominios de una variable. Si $H_{1}$ y $H_{2}$ son espacios de Hilbert y $T:H_{1}\to H_{2}$ es lineal y acotado, su adjunto es el operador $T^{*}:H_{2}\to H_{1}$ caracterizado por
+con la convención análoga en dominios de una variable. La norma inducida está dada por
+\[
+\|u\|_{L^2(\Omega)}
+=
+\left(\int_\Omega |u(x)|^2\,dx\right)^{1/2}.
+\]
+Si $H_{1}$ y $H_{2}$ son espacios de Hilbert y $T:H_{1}\to H_{2}$ es lineal y acotado, su adjunto es el operador $T^{*}:H_{2}\to H_{1}$ caracterizado por
 \[
 \langle Tx,y\rangle_{H_{2}}
 =

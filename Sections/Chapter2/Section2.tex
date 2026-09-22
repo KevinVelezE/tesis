@@ -1,4 +1,5 @@
 \section{Transformada de Radon y retroproyección}
+\label{RadonBackprojection}
 
 Sea $f\in\mathcal S(\mathbb R^2)$. Para $t\in\mathbb R$ y $\theta\in[0,\pi)$, la transformada de Radon de $f$ se define por
 \[
@@ -23,22 +24,37 @@ La linealidad se sigue directamente de la linealidad de la integral: para $f_1,f
 \mathcal R(af_1+bf_2)=a\mathcal Rf_1+b\mathcal Rf_2.
 \]
 
-Para identificar la retroproyección como adjunto formal, tomamos además $g\in C_c^\infty(\mathbb R\times(0,\pi))$ y definimos las parejas
+Para identificar la retroproyección como adjunto formal, sea $D=\mathbb R\times(0,\pi)$. Para $u,v\in L^2(D)$ definimos el producto interno del espacio de datos por
 \[
-\begin{aligned}
 \langle u,v\rangle_{\mathrm{datos}}
-&=
+=
 \int_0^\pi\int_{\mathbb R}
-u(t,\theta)\overline{v(t,\theta)}\,dt\,d\theta,\\
-\langle f,h\rangle_{\mathrm{imagen}}
-&=
-\int_{\mathbb R^2}f(x)\overline{h(x)}\,dx.
-\end{aligned}
+u(t,\theta)\overline{v(t,\theta)}\,dt\,d\theta.
 \]
-Entonces, usando el cambio de variables
+Para $p\in L^1(\mathbb R^2)$ y $q\in L^\infty(\mathbb R^2)$ usamos la pareja de dualidad del espacio de imagen
+\[
+\langle p,q\rangle_{\mathrm{imagen}}
+=
+\int_{\mathbb R^2}p(x)\overline{q(x)}\,dx.
+\]
+
+Tomamos ahora $g\in C_c^\infty(D)$. Entonces $\mathcal Rf,g\in L^2(D)$ y $f\in L^1(\mathbb R^2)$. Definimos la retroproyección de $g$ por
+\[
+(\mathcal R^*g)(x)
+=
+\int_0^\pi
+g(x\cdot\omega(\theta),\theta)\,d\theta.
+\]
+Además, $\mathcal R^*g\in L^\infty(\mathbb R^2)$, pues
+\[
+\|\mathcal R^*g\|_{L^\infty}
+\leq
+\pi\|g\|_{L^\infty}.
+\]
+Por consiguiente, en las parejas anteriores se toman concretamente $u=\mathcal Rf$, $v=g$, $p=f$ y $q=\mathcal R^*g$. Usando el cambio de variables
 \[
 x=t\omega(\theta)+s\omega^\perp(\theta),
-\qquad dx=dt\,ds
+\qquad dx=dt\,ds,
 \]
 para cada $\theta$, se obtiene
 \[
@@ -60,11 +76,4 @@ g(x\cdot\omega(\theta),\theta)\,d\theta
 \langle f,\mathcal R^*g\rangle_{\mathrm{imagen}}.
 \end{aligned}
 \]
-Por tanto, el adjunto formal de $\mathcal R$ con respecto a las medidas $dt\,d\theta$ y $dx$ es
-\[
-(\mathcal R^*g)(x)
-=
-\int_0^\pi
-g(x\cdot\omega(\theta),\theta)\,d\theta.
-\]
-Esta es la operación de retroproyección. La misma fórmula se empleará siempre que la integral angular esté bien definida. En esta tesis se usa la notación $\mathcal R^*$ para este adjunto formal; no se está afirmando aquí que ya se haya construido un operador acotado entre espacios $L^2$ completos. Para resultados de dualidad y retroproyección en un marco funcional más amplio puede consultarse Natterer \cite[Sec.~II.1, Thm.~1.3, pp.~13--15]{natterer2001}. Kuchment también desarrolla la retroproyección, aunque usa la notación $\mathcal R^\#$ y convenciones con integración angular diferentes \cite[Sec.~5.6, pp.~34--36]{kuchment2014}.
+Por tanto, la retroproyección $\mathcal R^*$ definida arriba es el adjunto formal de $\mathcal R$ con respecto a las medidas $dt\,d\theta$ y $dx$. La misma fórmula se empleará siempre que la integral angular esté bien definida. No se está afirmando aquí que ya se haya construido un operador acotado entre espacios $L^2$ completos. Para resultados de dualidad y retroproyección en un marco funcional más amplio puede consultarse Natterer \cite[Sec.~II.1, Thm.~1.3, pp.~13--15]{natterer2001}. Kuchment también desarrolla la retroproyección, aunque usa la notación $\mathcal R^\#$ y convenciones con integración angular diferentes \cite[Sec.~5.6, pp.~34--36]{kuchment2014}.
